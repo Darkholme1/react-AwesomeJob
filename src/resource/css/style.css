@@ -1,0 +1,13 @@
+@keyframes App-logo-spin {
+    from {
+        transform: scale(1.02,1.02);
+    }
+    to {
+        transform: scale(1,1);
+    }
+}
+
+.imageJob {
+    animation: App-logo-spin infinite 2s;
+    animation-direction: alternate;
+}
