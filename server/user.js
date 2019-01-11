@@ -268,5 +268,14 @@ Router.post('/resume/update_jobwant', function (req, res) {
         }
     )
 })
+//简历-工作内容测试
+Router.post('/resume/work_content', function (req, res) {
+    console.log(req.body.content)
+    res.send(req.body.content)
+})
+//简历-添加工作经历
+Router.post('/resume/add_workexp',function(req,res){
+    
+})
 
 module.exports = Router

@@ -3,6 +3,7 @@ import axios from '../../../../../api/axios'
 import { NavBar, Icon, Button, List, Modal, Toast } from 'antd-mobile'
 
 import { connect } from 'react-redux'
+import {deleteWorkexp} from '@/redux/actions/workexp-action'
 
 import style from './style'
 
@@ -28,6 +29,7 @@ class MyResume extends Component {
         console.log(timestamp) */
     }
     componentWillMount() {
+        this.props.deleteWorkexp()
         axios.get('/user/resume/query').then((res) => {
             this.setState({
                 resume: res.data,
@@ -507,6 +509,6 @@ class MyResume extends Component {
 const mapStateProps = (state) => {
     return { state }
 }
-const actionCreators = {}
+const actionCreators = {deleteWorkexp}
 MyResume = connect(mapStateProps, actionCreators)(MyResume)
 export default MyResume;

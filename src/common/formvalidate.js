@@ -12,16 +12,25 @@
 
 const formvalidate = (arr) => {
     for (var i = 0; i < arr.length; i++) {
+        //判空
         if (arr[i].required) {
             if (arr[i].data == null || arr[i].data == '') {
                 arr[i].required()
                 return 0
             }
         }
+        //有正则但可空时返回1
+        if(!arr[i].required&&arr[i].RegExp){
+            if (arr[i].data == null || arr[i].data == '') {
+                continue
+            }
+        }
+        //正则表达式判断
         if (arr[i].RegExp && arr[i].RegExp.value.test(arr[i].data) === false) {
             arr[i].RegExp.callback()
             return 0
         }
+        
 
     }
     return 1

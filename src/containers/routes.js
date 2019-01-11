@@ -19,6 +19,7 @@ import EditCompanyIntroduce from './Home/Mine/MyInfoBoss/CompanyInfo/EditCompany
 import CompanyBasic from './Home/Mine/MyInfoBoss/CompanyInfo/CompanyBasic'
 import CompanyAddress from './Home/Mine/MyInfoBoss/CompanyInfo/CompanyAddress'
 import JobContent from './Home/Mine/Myinfo/MyResume/AddWorkExp/JobContent'
+import JobPerformance from './Home/Mine/Myinfo/MyResume/AddWorkExp/JobPerformance'
 
 export { 
     Test, 
@@ -39,5 +40,6 @@ export {
     EditCompanyIntroduce,
     CompanyBasic,
     CompanyAddress,
-    JobContent
+    JobContent,
+    JobPerformance
 }

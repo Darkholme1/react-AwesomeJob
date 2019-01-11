@@ -30,6 +30,7 @@ class App extends Component {
                     <Route path='/company_basic' component={route.CompanyBasic} />
                     <Route path='/company_address' component={route.CompanyAddress} />
                     <Route path='/job_content' component={route.JobContent} />
+                    <Route path='/job_performance' component={route.JobPerformance} />
                 </div>
             </Router>
         );
