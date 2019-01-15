@@ -2,45 +2,14 @@ import React, { Component } from 'react';
 import { NavBar, Icon, List, TextareaItem, Toast } from 'antd-mobile'
 
 import { connect } from 'react-redux'
-import { updateWorkexp } from '@/redux/actions/workexp-action'
-
+import {addProjectExp} from '@/redux/actions/projectexp-action'
 import formvalidate from '@/common/formvalidate'
-
-class JobContent extends Component {
+class ProjectContent extends Component {
     constructor(props) {
         super(props)
         this.state = {
             content: ''
         }
-    }
-    componentWillMount() {
-        if (this.props.state.workExp.job_content !== '') {
-            this.setState({
-                content: this.props.state.workExp.job_content
-            })
-        }
-    }
-    save() {
-
-
-        const submit = formvalidate([
-            {
-                data: this.state.content,
-                required: () => {
-                    Toast.info('请输入工作内容', 1.5)
-                }
-            }
-        ])
-        if (submit === 1) {
-            /* this.props.history.goBack.arguments = [
-                values.content
-            ] */
-            this.props.updateWorkexp({
-                job_content: this.state.content
-            })
-            this.props.history.goBack()
-        }
-
     }
     render() {
         return (
@@ -50,9 +19,9 @@ class JobContent extends Component {
                     style={{ width: '100%' }}
                     rightContent={<span onClick={() => { this.save() }}>保存</span>}
                 >
-                    工作内容
+                    项目描述
                 </NavBar>
-                <List renderHeader={() => '请描述工作内容'}>
+                <List renderHeader={() => '请描述项目内容'}>
                     <TextareaItem
                         value={this.state.content}
                         rows={10}
@@ -69,10 +38,9 @@ class JobContent extends Component {
         );
     }
 }
-
 const mapStateProps = (state) => {
     return { state }
 }
-const actionCreators = { updateWorkexp }
-JobContent = connect(mapStateProps, actionCreators)(JobContent)
-export default JobContent;
+const actionCreators = {addProjectExp}
+ProjectContent = connect(mapStateProps, actionCreators)(ProjectContent)
+export default ProjectContent;

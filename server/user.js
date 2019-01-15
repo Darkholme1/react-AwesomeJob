@@ -251,7 +251,7 @@ Router.post('/resume/add_jobwant', function (req, res) {
         }
     })
 })
-//简历-删除\更改求职期望
+//简历-删除\更改求职期望(逻辑在前端)
 Router.post('/resume/update_jobwant', function (req, res) {
     Resume.updateOne(
         { user_id: req.cookies.user_id },
@@ -273,9 +273,74 @@ Router.post('/resume/work_content', function (req, res) {
     console.log(req.body.content)
     res.send(req.body.content)
 })
-//简历-添加工作经历
-Router.post('/resume/add_workexp',function(req,res){
-    
+//简历-添加或更新工作经历(逻辑在后端)
+Router.post('/resume/update_workexp', function (req, res) {
+    // console.log(JSON.parse(req.body.work_exp))
+    Resume.findOne(
+        { user_id: req.cookies.user_id },
+        function (err, doc) {
+            let workExpAll = doc.work_exp
+            let workExpNew = JSON.parse(req.body.work_exp)
+            //添加
+            if (req.body.is_edit == 0) {
+                workExpAll.push(workExpNew)
+            }
+            //更新
+            else if (req.body.is_edit == 1) {
+
+                workExpAll.forEach((current, index, arr) => {
+                    if (current._id == workExpNew._id) {
+                        arr[index] = workExpNew
+                    }
+                });
+                // console.log(workExp)
+            }
+            Resume.updateOne(
+                { user_id: req.cookies.user_id },
+                {
+                    $set: {
+                        work_exp: workExpAll
+                    }
+                },
+                function (err) {
+                    if (err) {
+                        res.end({ code: 1 })
+                    } else {
+                        res.send({ code: 0 })
+                    }
+                }
+            )
+        }
+    )
+})
+//简历-删除工作经历
+Router.post('/resume/delete_workexp', function (req, res) {
+    Resume.findOne(
+        { user_id: req.cookies.user_id },
+        function (err, doc) {
+            let workExpAll = doc.work_exp
+            workExpAll.forEach((current, index, arr) => {
+                if (current._id == req.body._id) {
+                    arr.splice(index, 1)
+                }
+            });
+            Resume.updateOne(
+                { user_id: req.cookies.user_id },
+                {
+                    $set: {
+                        work_exp: workExpAll
+                    }
+                },
+                function (err) {
+                    if (err) {
+                        res.end({ code: 1 })
+                    } else {
+                        res.send({ code: 0 })
+                    }
+                }
+            )
+        }
+    )
 })
 
 module.exports = Router

@@ -85,6 +85,7 @@ const style = {
     },
     itemContent: {
         marginTop: '10px',
+        fontFamily: 'Microsoft Yahei',
         display: '-webkit-box',
         WebkitBoxOrient: 'vertical',
         WebkitLineClamp: '3',

@@ -1,3 +1,4 @@
+import deepCopy from './deepCopy'
 export const pickerCity = [
     {
         label: '北京',
@@ -210,7 +211,13 @@ pickerWorkTime.push({
     label: '1990以前',
     value: '1'
 })
-export { pickerWorkTime }
+let pickerWorkEnd = deepCopy(pickerWorkTime)
+pickerWorkEnd.unshift({
+    label: '至今',
+    value: '0'
+})
+
+export { pickerWorkTime,pickerWorkEnd }
 
 let pickerEduTime = []
 for (var i = currentYear; i >= 1990; i--) {

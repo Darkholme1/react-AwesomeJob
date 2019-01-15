@@ -20,6 +20,8 @@ import CompanyBasic from './Home/Mine/MyInfoBoss/CompanyInfo/CompanyBasic'
 import CompanyAddress from './Home/Mine/MyInfoBoss/CompanyInfo/CompanyAddress'
 import JobContent from './Home/Mine/Myinfo/MyResume/AddWorkExp/JobContent'
 import JobPerformance from './Home/Mine/Myinfo/MyResume/AddWorkExp/JobPerformance'
+import ProjectContent from './Home/Mine/Myinfo/MyResume/AddProjectExp/ProjectContent'
+import ProjectPerformance from './Home/Mine/Myinfo/MyResume/AddProjectExp/ProjectPerformance'
 
 export { 
     Test, 
@@ -41,5 +43,7 @@ export {
     CompanyBasic,
     CompanyAddress,
     JobContent,
-    JobPerformance
+    JobPerformance,
+    ProjectContent,
+    ProjectPerformance
 }

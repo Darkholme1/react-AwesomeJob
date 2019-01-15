@@ -3,7 +3,7 @@ import axios from '../../../../../api/axios'
 import { NavBar, Icon, Button, List, Modal, Toast } from 'antd-mobile'
 
 import { connect } from 'react-redux'
-import {deleteWorkexp} from '@/redux/actions/workexp-action'
+import { deleteWorkexp } from '@/redux/actions/workexp-action'
 
 import style from './style'
 
@@ -21,7 +21,8 @@ class MyResume extends Component {
 
             //简历数据
             age: '--',
-            jobWant: []
+            jobWant: [],
+            workExp: []
         }
         /* var timestamp = new Date()-new Date(1997,3,1)
         timestamp = parseInt(timestamp/1000/60/60/24/365)
@@ -52,13 +53,11 @@ class MyResume extends Component {
                     }
 
                     this.setState({
-                        age: `${age} · ${work}`
+                        age: `${age} · ${work}`,
+                        jobWant: this.state.resume.job_want,
+                        workExp: this.state.resume.work_exp
                     })
                 }
-                //求职期望
-                this.setState({
-                    jobWant: this.state.resume.job_want
-                })
 
             })
             // console.log(this.state.resume)
@@ -77,15 +76,25 @@ class MyResume extends Component {
             console.log(err)
         }) */
         document.querySelector('body').setAttribute('style', 'background:white')
+        Toast.loading('Loading...', 30, () => {
+            console.log('Load complete !!!');
+        });
+
 
     }
     componentWillUnmount() {
         document.querySelector('body').removeAttribute('style')
     }
+    componentDidUpdate() {
+        if (this.state.axiosOk) {
+            Toast.hide()
+        }
+    }
     render() {
         const prompt = Modal.prompt
         return (
             <div>
+
                 <NavBar icon={<Icon type="left" />}
                     onLeftClick={() => { this.props.history.push({ pathname: '/', query: { tab: 2 } }) }}
                     style={{ position: 'fixed', width: '100%', top: '0', zIndex: '1' }}
@@ -108,395 +117,340 @@ class MyResume extends Component {
                     <span>添加</span>
                     <img style={style.iconAdd} src={require('../../../../resource/image/icon/add.png')} />
                 </Button> */}
-                <div style={{ marginTop: '45px' }}>
-                    <div tag="basic-information"
-                        style={this.state.touch === '个人信息' ? { ...style.listItem, ...style.bgTap } : style.listItem}
-                        onTouchStart={() => {
-                            this.setState({
-                                touch: '个人信息'
-                            })
-                        }}
-                        onTouchEnd={
-                            () => {
+                <div style={this.state.axiosOk ? { opacity: '1' } : { opacity: '0' }}>
+                    <div style={{ marginTop: '45px' }}>
+                        <div tag="basic-information"
+                            style={this.state.touch === '个人信息' ? { ...style.listItem, ...style.bgTap } : style.listItem}
+                            onTouchStart={() => {
                                 this.setState({
-                                    touch: ''
+                                    touch: '个人信息'
                                 })
+                            }}
+                            onTouchEnd={
+                                () => {
+                                    this.setState({
+                                        touch: ''
+                                    })
+                                }
                             }
-                        }
-                        onClick={() => {
-                            this.props.history.push({
-                                pathname: '/basicinfo',
-                                query: {
-                                    basic_info: this.state.resume.basic_info
-                                }
-                            })
-                        }}>
-                        <div tag="innerContainer" style={style.innerContainerBasic}>
-                            <div tag="data-information" style={style.dataInformation}>
-                                <div tag="nameAndIcon" style={style.nameAndIcon}>
-                                    <span style={{ fontSize: '2em', fontWeight: 'bold', marginRight: '10px' }}>{this.props.state.user.nickname}</span>
-                                    <img src={require('../../../../../resource/image/icon/edit.png')} style={{ width: '15px', height: '15px' }} />
+                            onClick={() => {
+                                this.props.history.push({
+                                    pathname: '/basicinfo',
+                                    query: {
+                                        basic_info: this.state.resume.basic_info
+                                    }
+                                })
+                            }}>
+                            <div tag="innerContainer" style={style.innerContainerBasic}>
+                                <div tag="data-information" style={style.dataInformation}>
+                                    <div tag="nameAndIcon" style={style.nameAndIcon}>
+                                        <span style={{ fontSize: '2em', fontWeight: 'bold', marginRight: '10px' }}>{this.props.state.user.nickname}</span>
+                                        <img src={require('../../../../../resource/image/icon/edit.png')} style={{ width: '15px', height: '15px' }} />
+                                    </div>
+                                    <div tag="worktime-age-education" style={{ color: 'rgb(136,136,136)' }}>
+                                        <span>{this.state.age}</span>
+                                    </div>
                                 </div>
-                                <div tag="worktime-age-education" style={{ color: 'rgb(136,136,136)' }}>
-                                    <span>{this.state.age}</span>
+                                <div tag="avatar">
+                                    {
+                                        (() => {
+                                            return this.props.state.user.avatar !== undefined ?
+                                                <img alt="头像" style={style.avatar} src={require(`../../../../../resource/image/avatar/av${this.props.state.user.avatar}.jpg`)} /> : ''
+                                        })()
+                                    }
                                 </div>
-                            </div>
-                            <div tag="avatar">
-                                {
-                                    (() => {
-                                        return this.props.state.user.avatar !== undefined ?
-                                            <img alt="头像" style={style.avatar} src={require(`../../../../../resource/image/avatar/av${this.props.state.user.avatar}.jpg`)} /> : ''
-                                    })()
-                                }
                             </div>
                         </div>
-                    </div>
-                    <div tag="job-want">
-                        <div tag="innerContainer" style={style.innerContainerItem}>
-                            <span style={{ fontSize: '18px', fontWeight: 'bold', ...style.itemPadding }}>求职期望</span>
-                            <div style={style.itemContainer}>
+                        <div tag="job-want">
+                            <div tag="innerContainer" style={style.innerContainerItem}>
+                                <span style={{ fontSize: '18px', fontWeight: 'bold', ...style.itemPadding }}>求职期望</span>
+                                <div style={style.itemContainer}>
+                                    {
+                                        (() => {
+                                            if (this.state.axiosOk) {
+                                                return this.state.jobWant.map((current, index, arr) => {
+                                                    var salary = current.salary[0] === 0 ? '面议' : `${current.salary[0]}-${current.salary[1]}k`
+                                                    return <div
+                                                        key={index}
+                                                        style={this.state.touch === `jobWant${index}` ?
+                                                            { ...style.itemBox, ...style.bgTap } :
+                                                            style.itemBox}
+                                                        onTouchStart={() => {
+                                                            this.setState({
+                                                                touch: `jobWant${index}`
+                                                            })
+                                                        }}
+                                                        onTouchEnd={() => {
+                                                            this.setState({
+                                                                touch: ''
+                                                            })
+                                                        }}
+                                                        onClick={() => {
+                                                            this.props.history.push({
+                                                                pathname: '/addjobwant',
+                                                                query: {
+                                                                    jobWant: current,
+                                                                    jobWantAll: this.state.jobWant
+                                                                }
+                                                            })
+                                                        }}
+                                                    >
+                                                        <div style={style.itemHeader}>
+                                                            <span style={style.itemTitle}>{current.job_name[1]}</span>
+                                                            <Icon type="right" size="xs" color="rgb(136, 136, 136)" />
+                                                        </div>
+                                                        <div>
+                                                            <span style={style.itemTag}>{current.city} {salary}</span>
+                                                        </div>
+                                                    </div>
+                                                })
+                                            }
+                                        })()
+                                    }
+                                </div>
                                 {
                                     (() => {
                                         if (this.state.axiosOk) {
-                                            return this.state.jobWant.map((current, index, arr) => {
-                                                var salary = current.salary[0] === 0 ? '面议' : `${current.salary[0]}-${current.salary[1]}k`
-                                                return <div
-                                                    key={index}
-                                                    style={this.state.touch === `jobWant${index}` ?
-                                                        { ...style.itemBox, ...style.bgTap } :
-                                                        style.itemBox}
-                                                    onTouchStart={() => {
-                                                        this.setState({
-                                                            touch: `jobWant${index}`
-                                                        })
-                                                    }}
-                                                    onTouchEnd={() => {
-                                                        this.setState({
-                                                            touch: ''
-                                                        })
-                                                    }}
-                                                    onClick={() => {
+                                            return this.state.jobWant.length === 3 ? '' :
+                                                <div style={{ ...style.itemPadding, ...style.btnContainer }}>
+                                                    <Button onClick={() => {
                                                         this.props.history.push({
                                                             pathname: '/addjobwant',
                                                             query: {
-                                                                jobWant: current,
-                                                                jobWantAll: this.state.jobWant
+                                                                city: this.props.state.user.city
                                                             }
                                                         })
-                                                    }}
-                                                >
-                                                    <div style={style.itemHeader}>
-                                                        <span style={style.itemTitle}>{current.job_name[1]}</span>
-                                                        <Icon type="right" size="xs" color="rgb(136, 136, 136)" />
-                                                    </div>
-                                                    <div>
-                                                        <span style={style.itemTag}>{current.city} {salary}</span>
-                                                    </div>
+                                                    }}>添加求职期望</Button>
+                                                    <div style={style.itemBottom}></div>
                                                 </div>
-                                            })
                                         }
                                     })()
                                 }
                             </div>
-                            {
-                                (() => {
-                                    if (this.state.axiosOk) {
-                                        return this.state.jobWant.length === 3 ? '' :
-                                            <div style={{ ...style.itemPadding, ...style.btnContainer }}>
-                                                <Button onClick={() => {
-                                                    this.props.history.push({
-                                                        pathname: '/addjobwant',
-                                                        query: {
-                                                            city: this.props.state.user.city
-                                                        }
-                                                    })
-                                                }}>添加求职期望</Button>
-                                                <div style={style.itemBottom}></div>
-                                            </div>
+                        </div>
+                        <div tag="realStudy-exp" >
+                            <div tag="innerContainer" style={style.innerContainerItem}>
+                                <span style={{ fontSize: '18px', fontWeight: 'bold', ...style.itemPadding }}>工作经历</span>
+                                <div style={style.itemContainer}>
+                                    {
+                                        (() => {
+                                            if (this.state.axiosOk) {
+                                                return this.state.workExp.map((current, index, arr) => {
+                                                    return <div
+                                                        key={index}
+                                                        style={this.state.touch === `workExp${index}` ?
+                                                            { ...style.itemBox, ...style.bgTap } :
+                                                            style.itemBox}
+                                                        onTouchStart={() => {
+                                                            this.setState({
+                                                                touch: `workExp${index}`
+                                                            })
+                                                        }}
+                                                        onTouchEnd={() => {
+                                                            this.setState({
+                                                                touch: ''
+                                                            })
+                                                        }}
+                                                        onClick={() => {
+                                                            this.props.history.push({
+                                                                pathname: '/addworkexp',
+                                                                query: {
+                                                                    workExp: current
+                                                                }
+                                                            })
+                                                        }}>
+                                                        <div style={style.itemHeader}>
+                                                            <span style={style.itemTitle}>{current.company}</span>
+
+                                                            <Icon type="right" size="xs" color="rgb(136, 136, 136)" />
+
+                                                        </div>
+                                                        <div>
+                                                            <span style={style.itemTag}>{current.position[1]}</span>
+                                                            <section style={style.itemContent}>
+
+                                                                {current.job_content}
+
+                                                            </section>
+                                                        </div>
+                                                    </div>
+                                                })
+                                            }
+                                        })()
                                     }
-                                })()
-                            }
-                        </div>
-                    </div>
-                    <div tag="realStudy-exp" >
-                        <div tag="innerContainer" style={style.innerContainerItem}>
-                            <span style={{ fontSize: '18px', fontWeight: 'bold', ...style.itemPadding }}>工作经历</span>
-                            <div style={style.itemContainer}>
-                                <div
-                                    style={this.state.touch === 'web' ?
-                                        { ...style.itemBox, ...style.bgTap } :
-                                        style.itemBox}
-                                    onTouchStart={() => {
-                                        this.setState({
-                                            touch: 'web'
-                                        })
-                                    }}
-                                    onTouchEnd={() => {
-                                        this.setState({
-                                            touch: ''
-                                        })
-                                    }}
-                                >
-                                    <div style={style.itemHeader}>
-                                        <span style={style.itemTitle}>浙江华云信息科技有限公司</span>
-
-                                        <Icon type="right" size="xs" color="rgb(136, 136, 136)" />
-
-                                    </div>
-                                    <div>
-                                        <span style={style.itemTag}>web前端</span>
-                                        <section style={style.itemContent}>
-                                            哇雷瓦雷瓦空寂你娃空寂你娃空寂你娃
-                                            空寂你娃空寂你娃啊啊撒旦吉萨可怜的
-                                            健身卡立即打开领导卡拉季凯撒觉得拉丝机是
-                                            哇雷瓦雷瓦空寂你娃空寂你娃空寂你娃
-                                            空寂你娃空寂你娃啊啊撒旦吉萨可怜的
-                                            健身卡立即打开领导卡拉季凯撒觉得拉丝机是
-                                        </section>
-                                    </div>
                                 </div>
-                                <div
-                                    style={this.state.touch === 'web' ?
-                                        { ...style.itemBox, ...style.bgTap } :
-                                        style.itemBox}
-                                    onTouchStart={() => {
-                                        this.setState({
-                                            touch: 'web'
-                                        })
-                                    }}
-                                    onTouchEnd={() => {
-                                        this.setState({
-                                            touch: ''
-                                        })
-                                    }}
-                                >
-                                    <div style={style.itemHeader}>
-                                        <span style={style.itemTitle}>浙江华云信息科技有限公司</span>
 
-                                        <Icon type="right" size="xs" color="rgb(136, 136, 136)" />
-
-                                    </div>
-                                    <div>
-                                        <span style={style.itemTag}>web前端</span>
-                                        <section style={style.itemContent}>
-                                            哇雷瓦雷瓦空寂你娃空寂你娃空寂你娃
-                                            空寂你娃空寂你娃啊啊撒旦吉萨可怜的
-                                            健身卡立即打开领导卡拉季凯撒觉得拉丝机是
-                                            哇雷瓦雷瓦空寂你娃空寂你娃空寂你娃
-                                            空寂你娃空寂你娃啊啊撒旦吉萨可怜的
-                                            健身卡立即打开领导卡拉季凯撒觉得拉丝机是
-                                        </section>
-                                    </div>
-                                </div><div
-                                    style={this.state.touch === 'web' ?
-                                        { ...style.itemBox, ...style.bgTap } :
-                                        style.itemBox}
-                                    onTouchStart={() => {
-                                        this.setState({
-                                            touch: 'web'
-                                        })
-                                    }}
-                                    onTouchEnd={() => {
-                                        this.setState({
-                                            touch: ''
-                                        })
-                                    }}
-                                >
-                                    <div style={style.itemHeader}>
-                                        <span style={style.itemTitle}>浙江华云信息科技有限公司</span>
-
-                                        <Icon type="right" size="xs" color="rgb(136, 136, 136)" />
-
-                                    </div>
-                                    <div>
-                                        <span style={style.itemTag}>web前端</span>
-                                        <section style={style.itemContent}>
-                                            哇雷瓦雷瓦空寂你娃空寂你娃空寂你娃
-                                            空寂你娃空寂你娃啊啊撒旦吉萨可怜的
-                                            健身卡立即打开领导卡拉季凯撒觉得拉丝机是
-                                            哇雷瓦雷瓦空寂你娃空寂你娃空寂你娃
-                                            空寂你娃空寂你娃啊啊撒旦吉萨可怜的
-                                            健身卡立即打开领导卡拉季凯撒觉得拉丝机是
-                                        </section>
-                                    </div>
+                                <div style={{ ...style.itemPadding, ...style.btnContainer }}>
+                                    <Button onClick={() => { this.props.history.push('/addworkexp') }}>添加工作经历</Button>
+                                    <div style={style.itemBottom}></div>
                                 </div>
-                            </div>
-
-                            <div style={{ ...style.itemPadding, ...style.btnContainer }}>
-                                <Button onClick={() => { this.props.history.push('/addworkexp') }}>添加工作经历</Button>
-                                <div style={style.itemBottom}></div>
                             </div>
                         </div>
-                    </div>
-                    <div tag="project-exp" >
-                        <div tag="innerContainer" style={style.innerContainerItem}>
-                            <span style={{ fontSize: '18px', fontWeight: 'bold', ...style.itemPadding }}>项目经历</span>
-                            <div style={style.itemContainer}>
-                                <div
-                                    style={this.state.touch === 'web' ?
-                                        { ...style.itemBox, ...style.bgTap } :
-                                        style.itemBox}
-                                    onTouchStart={() => {
-                                        this.setState({
-                                            touch: 'web'
-                                        })
-                                    }}
-                                    onTouchEnd={() => {
-                                        this.setState({
-                                            touch: ''
-                                        })
-                                    }}
-                                >
-                                    <div style={style.itemHeader}>
-                                        <span style={style.itemTitle}>浙江华云信息科技有限公司</span>
+                        <div tag="project-exp" >
+                            <div tag="innerContainer" style={style.innerContainerItem}>
+                                <span style={{ fontSize: '18px', fontWeight: 'bold', ...style.itemPadding }}>项目经历</span>
+                                <div style={style.itemContainer}>
+                                    <div
+                                        style={this.state.touch === 'web' ?
+                                            { ...style.itemBox, ...style.bgTap } :
+                                            style.itemBox}
+                                        onTouchStart={() => {
+                                            this.setState({
+                                                touch: 'web'
+                                            })
+                                        }}
+                                        onTouchEnd={() => {
+                                            this.setState({
+                                                touch: ''
+                                            })
+                                        }}
+                                    >
+                                        <div style={style.itemHeader}>
+                                            <span style={style.itemTitle}>浙江华云信息科技有限公司</span>
 
-                                        <Icon type="right" size="xs" color="rgb(136, 136, 136)" />
+                                            <Icon type="right" size="xs" color="rgb(136, 136, 136)" />
 
-                                    </div>
-                                    <div>
-                                        <span style={style.itemTag}>web前端</span>
-                                        <section style={style.itemContent}>
-                                            哇雷瓦雷瓦空寂你娃空寂你娃空寂你娃
-                                            空寂你娃空寂你娃啊啊撒旦吉萨可怜的
-                                            健身卡立即打开领导卡拉季凯撒觉得拉丝机是
-                                            哇雷瓦雷瓦空寂你娃空寂你娃空寂你娃
-                                            空寂你娃空寂你娃啊啊撒旦吉萨可怜的
-                                            健身卡立即打开领导卡拉季凯撒觉得拉丝机是
+                                        </div>
+                                        <div>
+                                            <span style={style.itemTag}>web前端</span>
+                                            <section style={style.itemContent}>
+                                                哇雷瓦雷瓦空寂你娃空寂你娃空寂你娃
+                                                空寂你娃空寂你娃啊啊撒旦吉萨可怜的
+                                                健身卡立即打开领导卡拉季凯撒觉得拉丝机是
+                                                哇雷瓦雷瓦空寂你娃空寂你娃空寂你娃
+                                                空寂你娃空寂你娃啊啊撒旦吉萨可怜的
+                                                健身卡立即打开领导卡拉季凯撒觉得拉丝机是
                                         </section>
+                                        </div>
+                                    </div>
+                                    <div
+                                        style={this.state.touch === 'web' ?
+                                            { ...style.itemBox, ...style.bgTap } :
+                                            style.itemBox}
+                                        onTouchStart={() => {
+                                            this.setState({
+                                                touch: 'web'
+                                            })
+                                        }}
+                                        onTouchEnd={() => {
+                                            this.setState({
+                                                touch: ''
+                                            })
+                                        }}
+                                    >
+                                        <div style={style.itemHeader}>
+                                            <span style={style.itemTitle}>浙江华云信息科技有限公司</span>
+
+                                            <Icon type="right" size="xs" color="rgb(136, 136, 136)" />
+
+                                        </div>
+                                        <div>
+                                            <span style={style.itemTag}>web前端</span>
+                                            <section style={style.itemContent}>
+                                                撒赖打开撒娇了撒娇看来Salk将大量时间打卡老咔叽的垃圾的阿克苏了解到卡机的撒大了安静的拉德斯基老咔叽离开家垃圾拉进来飒飒
+                                        </section>
+                                        </div>
+                                    </div><div
+                                        style={this.state.touch === 'web' ?
+                                            { ...style.itemBox, ...style.bgTap } :
+                                            style.itemBox}
+                                        onTouchStart={() => {
+                                            this.setState({
+                                                touch: 'web'
+                                            })
+                                        }}
+                                        onTouchEnd={() => {
+                                            this.setState({
+                                                touch: ''
+                                            })
+                                        }}
+                                    >
+                                        <div style={style.itemHeader}>
+                                            <span style={style.itemTitle}>浙江华云信息科技有限公司</span>
+
+                                            <Icon type="right" size="xs" color="rgb(136, 136, 136)" />
+
+                                        </div>
+                                        <div>
+                                            <span style={style.itemTag}>web前端</span>
+                                            <section style={style.itemContent}>
+                                                哇雷瓦雷瓦空寂你娃空寂你娃空寂你娃
+                                                空寂你娃空寂你娃啊啊撒旦吉萨可怜的
+                                                健身卡立即打开领导卡拉季凯撒觉得拉丝机是
+                                                哇雷瓦雷瓦空寂你娃空寂你娃空寂你娃
+                                                空寂你娃空寂你娃啊啊撒旦吉萨可怜的
+                                                健身卡立即打开领导卡拉季凯撒觉得拉丝机是
+                                        </section>
+                                        </div>
                                     </div>
                                 </div>
-                                <div
-                                    style={this.state.touch === 'web' ?
-                                        { ...style.itemBox, ...style.bgTap } :
-                                        style.itemBox}
-                                    onTouchStart={() => {
-                                        this.setState({
-                                            touch: 'web'
-                                        })
-                                    }}
-                                    onTouchEnd={() => {
-                                        this.setState({
-                                            touch: ''
-                                        })
-                                    }}
-                                >
-                                    <div style={style.itemHeader}>
-                                        <span style={style.itemTitle}>浙江华云信息科技有限公司</span>
-
-                                        <Icon type="right" size="xs" color="rgb(136, 136, 136)" />
-
-                                    </div>
-                                    <div>
-                                        <span style={style.itemTag}>web前端</span>
-                                        <section style={style.itemContent}>
-                                            哇雷瓦雷瓦空寂你娃空寂你娃空寂你娃
-                                            空寂你娃空寂你娃啊啊撒旦吉萨可怜的
-                                            健身卡立即打开领导卡拉季凯撒觉得拉丝机是
-                                            哇雷瓦雷瓦空寂你娃空寂你娃空寂你娃
-                                            空寂你娃空寂你娃啊啊撒旦吉萨可怜的
-                                            健身卡立即打开领导卡拉季凯撒觉得拉丝机是
-                                        </section>
-                                    </div>
-                                </div><div
-                                    style={this.state.touch === 'web' ?
-                                        { ...style.itemBox, ...style.bgTap } :
-                                        style.itemBox}
-                                    onTouchStart={() => {
-                                        this.setState({
-                                            touch: 'web'
-                                        })
-                                    }}
-                                    onTouchEnd={() => {
-                                        this.setState({
-                                            touch: ''
-                                        })
-                                    }}
-                                >
-                                    <div style={style.itemHeader}>
-                                        <span style={style.itemTitle}>浙江华云信息科技有限公司</span>
-
-                                        <Icon type="right" size="xs" color="rgb(136, 136, 136)" />
-
-                                    </div>
-                                    <div>
-                                        <span style={style.itemTag}>web前端</span>
-                                        <section style={style.itemContent}>
-                                            哇雷瓦雷瓦空寂你娃空寂你娃空寂你娃
-                                            空寂你娃空寂你娃啊啊撒旦吉萨可怜的
-                                            健身卡立即打开领导卡拉季凯撒觉得拉丝机是
-                                            哇雷瓦雷瓦空寂你娃空寂你娃空寂你娃
-                                            空寂你娃空寂你娃啊啊撒旦吉萨可怜的
-                                            健身卡立即打开领导卡拉季凯撒觉得拉丝机是
-                                        </section>
-                                    </div>
+                                <div style={{ ...style.itemPadding, ...style.btnContainer }}>
+                                    <Button onClick={() => { this.props.history.push('/addprojectexp') }}>添加项目经历</Button>
+                                    <div style={style.itemBottom}></div>
                                 </div>
-                            </div>
-                            <div style={{ ...style.itemPadding, ...style.btnContainer }}>
-                                <Button onClick={() => { this.props.history.push('/addprojectexp') }}>添加项目经历</Button>
-                                <div style={style.itemBottom}></div>
                             </div>
                         </div>
-                    </div>
-                    <div tag="education-exp" >
-                        <div tag="innerContainer" style={style.innerContainerItem}>
-                            <span style={{ fontSize: '18px', fontWeight: 'bold', ...style.itemPadding }}>教育经历</span>
-                            <div style={style.itemContainer}>
-                                <div
-                                    style={this.state.touch === 'web' ?
-                                        { ...style.itemBox, ...style.bgTap } :
-                                        style.itemBox}
-                                    onTouchStart={() => {
-                                        this.setState({
-                                            touch: 'web'
-                                        })
-                                    }}
-                                    onTouchEnd={() => {
-                                        this.setState({
-                                            touch: ''
-                                        })
-                                    }}
-                                >
-                                    <div style={style.itemHeader}>
-                                        <span style={style.itemTitle}>浙江华云信息科技有限公司</span>
+                        <div tag="education-exp" >
+                            <div tag="innerContainer" style={style.innerContainerItem}>
+                                <span style={{ fontSize: '18px', fontWeight: 'bold', ...style.itemPadding }}>教育经历</span>
+                                <div style={style.itemContainer}>
+                                    <div
+                                        style={this.state.touch === 'web' ?
+                                            { ...style.itemBox, ...style.bgTap } :
+                                            style.itemBox}
+                                        onTouchStart={() => {
+                                            this.setState({
+                                                touch: 'web'
+                                            })
+                                        }}
+                                        onTouchEnd={() => {
+                                            this.setState({
+                                                touch: ''
+                                            })
+                                        }}
+                                    >
+                                        <div style={style.itemHeader}>
+                                            <span style={style.itemTitle}>浙江华云信息科技有限公司</span>
 
-                                        <Icon type="right" size="xs" color="rgb(136, 136, 136)" />
+                                            <Icon type="right" size="xs" color="rgb(136, 136, 136)" />
 
-                                    </div>
-                                    <div>
-                                        <span style={style.itemTag}>web前端</span>
-                                        <section style={style.itemContent}>
-                                            哇雷瓦雷瓦空寂你娃空寂你娃空寂你娃
-                                            空寂你娃空寂你娃啊啊撒旦吉萨可怜的
-                                            健身卡立即打开领导卡拉季凯撒觉得拉丝机是
-                                            哇雷瓦雷瓦空寂你娃空寂你娃空寂你娃
-                                            空寂你娃空寂你娃啊啊撒旦吉萨可怜的
-                                            健身卡立即打开领导卡拉季凯撒觉得拉丝机是
+                                        </div>
+                                        <div>
+                                            <span style={style.itemTag}>web前端</span>
+                                            <section style={style.itemContent}>
+                                                哇雷瓦雷瓦空寂你娃空寂你娃空寂你娃
+                                                空寂你娃空寂你娃啊啊撒旦吉萨可怜的
+                                                健身卡立即打开领导卡拉季凯撒觉得拉丝机是
+                                                哇雷瓦雷瓦空寂你娃空寂你娃空寂你娃
+                                                空寂你娃空寂你娃啊啊撒旦吉萨可怜的
+                                                健身卡立即打开领导卡拉季凯撒觉得拉丝机是
                                         </section>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div style={{ ...style.itemPadding, ...style.btnContainer }}>
-                                <Button onClick={() => { this.props.history.push('/addeducationexp') }}>添加教育经历</Button>
-                                <div style={style.itemBottom}></div>
+                                <div style={{ ...style.itemPadding, ...style.btnContainer }}>
+                                    <Button onClick={() => { this.props.history.push('/addeducationexp') }}>添加教育经历</Button>
+                                    <div style={style.itemBottom}></div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div tag="github" >
-                        <div tag="innerContainer" style={style.innerContainerItem}>
-                            <span style={{ fontSize: '18px', fontWeight: 'bold', ...style.itemPadding }}>社交主页</span>
-                            <div style={style.itemPadding}>
-                                <Button
-                                    style={{ ...style.itemPadding, ...style.btnContainer }}
-                                    onClick={() => prompt(
-                                        '社交主页',
-                                        '建议添加能突出个人实力的主页',
-                                        [
-                                            { text: '取消' },
-                                            { text: '添加', onPress: password => console.log(`密码为:${password}`) },
-                                        ],
+                        <div tag="github" >
+                            <div tag="innerContainer" style={style.innerContainerItem}>
+                                <span style={{ fontSize: '18px', fontWeight: 'bold', ...style.itemPadding }}>社交主页</span>
+                                <div style={style.itemPadding}>
+                                    <Button
+                                        style={{ ...style.itemPadding, ...style.btnContainer }}
+                                        onClick={() => prompt(
+                                            '社交主页',
+                                            '建议添加能突出个人实力的主页',
+                                            [
+                                                { text: '取消' },
+                                                { text: '添加', onPress: password => console.log(`密码为:${password}`) },
+                                            ],
 
-                                    )}>添加链接</Button>
-                                <div style={style.itemBottom}></div>
+                                        )}>添加链接</Button>
+                                    <div style={style.itemBottom}></div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -509,6 +463,6 @@ class MyResume extends Component {
 const mapStateProps = (state) => {
     return { state }
 }
-const actionCreators = {deleteWorkexp}
+const actionCreators = { deleteWorkexp }
 MyResume = connect(mapStateProps, actionCreators)(MyResume)
 export default MyResume;

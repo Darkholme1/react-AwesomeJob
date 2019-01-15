@@ -4,12 +4,12 @@
 import { ADD_WORKEXP, UPDATE_WORKEXP, DELETE_WORKEXP } from '../actions/workexp-action'
 const init = {
     company: '',
-    startWork: '',
-    endWork: '',
-    jobName: '',
+    start: '',
+    end: '',
+    position: '',
     department: '',
-    jobContent: '',
-    jobPerformance: ''
+    job_content: '',
+    job_performance: ''
 }
 export default function reducer(state = init, action) {
     switch (action.type) {

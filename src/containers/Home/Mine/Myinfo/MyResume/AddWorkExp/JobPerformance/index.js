@@ -16,7 +16,7 @@ class JobPerformance extends Component {
     componentWillMount(){
         if (this.props.state.workExp.jobPerformance !== '') {
             this.setState({
-                content: this.props.state.workExp.jobPerformance
+                content: this.props.state.workExp.job_performance
             })
         }
     }
@@ -27,13 +27,13 @@ class JobPerformance extends Component {
             {
                 data: this.state.content,
                 required: () => {
-                    Toast.info('请输入工作内容', 1.5)
+                    Toast.info('请输入工作业绩+', 1.5)
                 }
             }
         ])
         if (submit === 1) {
             this.props.updateWorkexp({
-                jobPerformance: this.state.content
+                job_performance: this.state.content
             })
             this.props.history.goBack()
         }
