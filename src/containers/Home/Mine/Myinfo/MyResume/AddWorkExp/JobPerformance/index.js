@@ -14,7 +14,7 @@ class JobPerformance extends Component {
         }
     }
     componentWillMount(){
-        if (this.props.state.workExp.jobPerformance !== '') {
+        if (this.props.state.workExp.job_performance !== '') {
             this.setState({
                 content: this.props.state.workExp.job_performance
             })

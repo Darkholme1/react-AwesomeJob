@@ -29,6 +29,22 @@ const workexpSchema = new mongoose.Schema({
     'job_content': { type: String, require: true },
     'job_performance': { type: String }
 })
+const projectexpSchema = new mongoose.Schema({
+    'project_name': { type: String, require: true },
+    'charactor': { type: String, require: true },
+    'start': { type: Array, require: true },
+    'end': { type: Array, require: true },
+    'project_content': { type: String, require: true },
+    'project_performance': { type: String },
+    'link': { type: String }
+})
+const eduexpSchema = new mongoose.Schema({
+    edu_bg: { type: Array, require: true },
+    school: { type: String, require: true },
+    major: { type: String, require: true },
+    edu_time: { type: Array, require: true },
+    school_exp: { type: String, require: true }
+})
 
 const users = mongoose.model('users', new mongoose.Schema({
     'user': { type: String, require: true },
@@ -47,7 +63,9 @@ const resumes = mongoose.model('resumes', new mongoose.Schema({
     'user_id': { type: String, require: true },
     'basic_info': { type: Object, require: true },
     'job_want': [jobwantSchema],
-    'work_exp': [workexpSchema]
+    'work_exp': [workexpSchema],
+    'project_exp': [projectexpSchema],
+    'edu_exp': [eduexpSchema]
 }))
 
 

@@ -41,9 +41,9 @@
 </body>
 <script>
   fnResize()
-  window.onresize = function () {
+  /* window.onresize = function () {
     fnResize()
-  }
+  } */
   function fnResize() {
     var deviceWidth = document.documentElement.clientWidth || window.innerWidth
     var fontsize = (deviceWidth / 7.5) + 'px'
@@ -52,6 +52,12 @@
     /* document.getElementById("root").style.height = window.screen.height+'px'
     console.log(document.getElementById("root").style.height) */
   }
+
+  var u = navigator.userAgent;
+  var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
+  var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+  var mSystem = isAndroid === true ? 1 : 0 //0:ios,1:安卓
+  sessionStorage.mSystem = mSystem
 </script>
 
 </html>

@@ -22,6 +22,7 @@ import JobContent from './Home/Mine/Myinfo/MyResume/AddWorkExp/JobContent'
 import JobPerformance from './Home/Mine/Myinfo/MyResume/AddWorkExp/JobPerformance'
 import ProjectContent from './Home/Mine/Myinfo/MyResume/AddProjectExp/ProjectContent'
 import ProjectPerformance from './Home/Mine/Myinfo/MyResume/AddProjectExp/ProjectPerformance'
+import SchoolExp from './Home/Mine/Myinfo/MyResume/AddEducationExp/SchoolExp'
 
 export { 
     Test, 
@@ -45,5 +46,6 @@ export {
     JobContent,
     JobPerformance,
     ProjectContent,
-    ProjectPerformance
+    ProjectPerformance,
+    SchoolExp
 }

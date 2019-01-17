@@ -268,39 +268,76 @@ Router.post('/resume/update_jobwant', function (req, res) {
         }
     )
 })
-//简历-工作内容测试
-Router.post('/resume/work_content', function (req, res) {
-    console.log(req.body.content)
-    res.send(req.body.content)
-})
-//简历-添加或更新工作经历(逻辑在后端)
-Router.post('/resume/update_workexp', function (req, res) {
+//简历-添加或更新经历(逻辑在后端) type:1.工作经历,2.项目经历,3.教育经历
+Router.post('/resume/update_exp', function (req, res) {
     // console.log(JSON.parse(req.body.work_exp))
     Resume.findOne(
         { user_id: req.cookies.user_id },
         function (err, doc) {
-            let workExpAll = doc.work_exp
-            let workExpNew = JSON.parse(req.body.work_exp)
+            let expAll
+            let type = JSON.parse(req.body.type)
+            switch (type) {
+                case 1: {
+                    expAll = doc.work_exp
+                    break
+                }
+                case 2: {
+                    expAll = doc.project_exp
+                    break
+                }
+                case 3: {
+                    expAll = doc.edu_exp
+                    break
+                }
+                default: {
+                    res.send({ code: 1 })
+                    break
+                }
+            }
+            let expNew = JSON.parse(req.body.exp)
             //添加
             if (req.body.is_edit == 0) {
-                workExpAll.push(workExpNew)
+                expAll.push(expNew)
             }
             //更新
             else if (req.body.is_edit == 1) {
 
-                workExpAll.forEach((current, index, arr) => {
-                    if (current._id == workExpNew._id) {
-                        arr[index] = workExpNew
+                expAll.forEach((current, index, arr) => {
+                    if (current._id == expNew._id) {
+                        arr[index] = expNew
                     }
                 });
                 // console.log(workExp)
             }
+            let setObj
+            switch (type) {
+                case 1: {
+                    setObj = {
+                        work_exp: expAll
+                    }
+                    break
+                }
+                case 2: {
+                    setObj = {
+                        project_exp: expAll
+                    }
+                    break
+                }
+                case 3: {
+                    setObj = {
+                        edu_exp: expAll
+                    }
+                    break
+                }
+                default: {
+                    res.send({ code: 1 })
+                    break
+                }
+            }
             Resume.updateOne(
                 { user_id: req.cookies.user_id },
                 {
-                    $set: {
-                        work_exp: workExpAll
-                    }
+                    $set: setObj
                 },
                 function (err) {
                     if (err) {
@@ -313,23 +350,65 @@ Router.post('/resume/update_workexp', function (req, res) {
         }
     )
 })
-//简历-删除工作经历
-Router.post('/resume/delete_workexp', function (req, res) {
+//删除经历 type:1.工作经历,2.项目经历,3.教育经历
+Router.post('/resume/delete_exp', function (req, res) {
     Resume.findOne(
         { user_id: req.cookies.user_id },
         function (err, doc) {
-            let workExpAll = doc.work_exp
-            workExpAll.forEach((current, index, arr) => {
+            let expAll
+            let type = JSON.parse(req.body.type)
+            switch (type) {
+                case 1: {
+                    expAll = doc.work_exp
+                    break
+                }
+                case 2: {
+                    expAll = doc.project_exp
+                    break
+                }
+                case 3: {
+                    expAll = doc.edu_exp
+                    break
+                }
+                default: {
+                    res.send({ code: 1 })
+                    break
+                }
+            }
+            expAll.forEach((current, index, arr) => {
                 if (current._id == req.body._id) {
                     arr.splice(index, 1)
                 }
             });
+            let setObj
+            switch (type) {
+                case 1: {
+                    setObj = {
+                        work_exp: expAll
+                    }
+                    break
+                }
+                case 2: {
+                    setObj = {
+                        project_exp: expAll
+                    }
+                    break
+                }
+                case 3: {
+                    setObj = {
+                        edu_exp: expAll
+                    }
+                    break
+                }
+                default: {
+                    res.send({ code: 1 })
+                    break
+                }
+            }
             Resume.updateOne(
                 { user_id: req.cookies.user_id },
                 {
-                    $set: {
-                        work_exp: workExpAll
-                    }
+                    $set: setObj
                 },
                 function (err) {
                     if (err) {

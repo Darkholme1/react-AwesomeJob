@@ -23,6 +23,9 @@ class AddWorkExp extends Component {
                 department: '',
                 job_content: '',
                 job_performance: ''
+            },
+            buttonStyle: {
+                display: 'block'
             }
         }
     }
@@ -33,11 +36,49 @@ class AddWorkExp extends Component {
                 isEdit: 1
             })
         }
+        if (sessionStorage.isEdit) {
+            this.setState({
+                isEdit: 1
+            })
+        }
         setTimeout(() => {
             this.setState({
                 workExp: this.props.state.workExp
             })
         }, 0);
+    }
+    componentDidMount() {
+        setTimeout(() => {
+            if (sessionStorage.mSystem == 1) {
+                let initHeight = window.innerHeight
+                window.onresize = () => {
+                    if (window.innerHeight == initHeight) {
+                        this.buttonShow()
+                    } else if (window.innerHeight < initHeight) {
+                        this.buttonHide()
+                    }
+                }
+            } else if (sessionStorage.mSystem == 0) {
+                document.addEventListener('focusin', () => {
+                    this.buttonHide()
+                })
+                document.addEventListener('focusout', () => {
+                    this.buttonShow()
+                })
+            }
+        }, 500);
+    }
+    componentWillUnmount() {
+        if (sessionStorage.mSystem == 1) {
+            window.onreset = ''
+        } else if (sessionStorage.mSystem == 0) {
+            document.removeEventListener('focusin', () => {
+                this.buttonHide()
+            })
+            document.removeEventListener('focusout', () => {
+                this.buttonShow()
+            })
+        }
     }
     submit() {
         const submit = formvalidate([
@@ -89,10 +130,10 @@ class AddWorkExp extends Component {
         ])
         if (submit === 1) {
             if (!this.state.isEdit) {
-                // console.log(this.state.workExp)
-                axios.post('/user/resume/update_workexp', {
-                    work_exp: JSON.stringify(this.state.workExp),
-                    is_edit: 0
+                axios.post('/user/resume/update_exp', {
+                    exp: JSON.stringify(this.state.workExp),
+                    is_edit: 0,
+                    type: 1
                 }).then(res => {
                     // console.log(res)
                     if (res.data.code === 0) {
@@ -105,9 +146,10 @@ class AddWorkExp extends Component {
                     console.log(err)
                 })
             } else {
-                axios.post('/user/resume/update_workexp', {
-                    work_exp: JSON.stringify(this.state.workExp),
-                    is_edit: 1
+                axios.post('/user/resume/update_exp', {
+                    exp: JSON.stringify(this.state.workExp),
+                    is_edit: 1,
+                    type: 1
                 }).then(res => {
                     // console.log(res)
                     if (res.data.code === 0) {
@@ -129,8 +171,9 @@ class AddWorkExp extends Component {
             { text: '取消', onPress: () => { } },
             {
                 text: '确认', onPress: () => {
-                    axios.post('/user/resume/delete_workexp', {
-                        _id: this.state.workExp._id
+                    axios.post('/user/resume/delete_exp', {
+                        _id: this.state.workExp._id,
+                        type: 1
                     }).then(res => {
                         console.log(res)
                         if (res.data.code === 0) {
@@ -144,6 +187,20 @@ class AddWorkExp extends Component {
                 }
             },
         ])
+    }
+    buttonHide() {
+        this.setState({
+            buttonStyle: {
+                display: 'none'
+            }
+        })
+    }
+    buttonShow() {
+        this.setState({
+            buttonStyle: {
+                display: 'block'
+            }
+        })
     }
     render() {
         const Item = List.Item
@@ -251,6 +308,9 @@ class AddWorkExp extends Component {
                         arrow="horizontal"
                         onClick={() => {
                             this.props.addWorkexp(this.state.workExp)
+                            if (this.state.isEdit) {
+                                sessionStorage.isEdit = 1
+                            }
                             this.props.history.push('/job_content')
                         }}>工作内容</Item>
                     <Item
@@ -258,10 +318,13 @@ class AddWorkExp extends Component {
                         arrow="horizontal"
                         onClick={() => {
                             this.props.addWorkexp(this.state.workExp)
+                            if (this.state.isEdit) {
+                                sessionStorage.isEdit = 1
+                            }
                             this.props.history.push('/job_performance')
                         }}>工作业绩</Item>
                 </List>
-                <div style={commonStyle.footerBtnContainer}>
+                <div style={{ ...commonStyle.footerBtnContainer, ...this.state.buttonStyle }}>
                     {
                         (() => {
                             return this.state.isEdit ?

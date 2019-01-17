@@ -2,20 +2,19 @@ import React, { Component } from 'react';
 import { NavBar, Icon, List, TextareaItem, Toast } from 'antd-mobile'
 
 import { connect } from 'react-redux'
-import {updateProjectExp} from '@/redux/actions/projectexp-action'
-
+import { updateEduExp } from '@/redux/actions/eduexp-action'
 import formvalidate from '@/common/formvalidate'
-class ProjectPerformance extends Component {
+class SchoolExp extends Component {
     constructor(props) {
         super(props)
         this.state = {
             content: ''
         }
     }
-    componentWillMount(){
-        if (this.props.state.projectExp.project_performance !== '') {
+    componentWillMount() {
+        if (this.props.state.eduExp.school_exp !== '') {
             this.setState({
-                content: this.props.state.projectExp.project_performance
+                content: this.props.state.eduExp.school_exp
             })
         }
     }
@@ -26,13 +25,16 @@ class ProjectPerformance extends Component {
             {
                 data: this.state.content,
                 required: () => {
-                    Toast.info('请输入项目业绩', 1.5)
+                    Toast.info('请输入在校经历', 1.5)
                 }
             }
         ])
         if (submit === 1) {
-            this.props.updateProjectExp({
-                project_performance: this.state.content
+            /* this.props.history.goBack.arguments = [
+                values.content
+            ] */
+            this.props.updateEduExp({
+                school_exp: this.state.content
             })
             this.props.history.goBack()
         }
@@ -46,9 +48,9 @@ class ProjectPerformance extends Component {
                     style={{ width: '100%' }}
                     rightContent={<span onClick={() => { this.save() }}>保存</span>}
                 >
-                    项目业绩
+                    项目描述
                 </NavBar>
-                <List renderHeader={() => '请描述项目业绩'}>
+                <List renderHeader={() => '请描述项目内容'}>
                     <TextareaItem
                         value={this.state.content}
                         rows={10}
@@ -68,6 +70,6 @@ class ProjectPerformance extends Component {
 const mapStateProps = (state) => {
     return { state }
 }
-const actionCreators = {updateProjectExp}
-ProjectPerformance = connect(mapStateProps, actionCreators)(ProjectPerformance)
-export default ProjectPerformance;
+const actionCreators = { updateEduExp }
+SchoolExp = connect(mapStateProps, actionCreators)(SchoolExp)
+export default SchoolExp;

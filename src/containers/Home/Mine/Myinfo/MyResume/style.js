@@ -76,7 +76,7 @@ const style = {
     itemBottom: {
         width: '100%',
         height: '1px',
-        background: 'rgb(136,136,136)',
+        // background: 'rgb(136,136,136)',
         opacity: '0.2',
         marginTop: '15px'
     },

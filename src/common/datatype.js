@@ -1,7 +1,7 @@
 /**
  * 数据类型
  */
-const user = (str) => {
+const user = str => {
     switch (str) {
         case 'BOSS':
             return 1
@@ -9,6 +9,18 @@ const user = (str) => {
             return 0
         default:
             return -1
+    }
+}
+const exp = str => {
+    switch (str) {
+        case '工作经历':
+            return 1
+        case '项目经历':
+            return 2
+        case '教育经历':
+            return 3
+        default:
+            return 0
     }
 }
 /* const resumeTouch = (str) => {
@@ -22,6 +34,7 @@ const user = (str) => {
     }
 } */
 module.exports = {
-    user: user
+    user: user,
+    exp: exp
     // resumeTouch: resumeTouch
 }
