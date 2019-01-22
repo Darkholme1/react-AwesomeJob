@@ -16,27 +16,27 @@ mongoose.connect(DB_URL, { useNewUrlParser: true }, function (err) {
     github: { type: Array }
 })) */
 const jobwantSchema = new mongoose.Schema({
-    'job_name': { type: Array, require: true },
-    'city': { type: String, require: true },
-    'salary': { type: Array, require: true }
+    job_name: { type: Array, require: true },
+    city: { type: String, require: true },
+    salary: { type: Array, require: true }
 })
 const workexpSchema = new mongoose.Schema({
-    'company': { type: String, require: true },
-    'start': { type: Array, require: true },
-    'end': { type: Array, require: true },
-    'position': { type: Array, require: true },
-    'department': { type: String },
-    'job_content': { type: String, require: true },
-    'job_performance': { type: String }
+    company: { type: String, require: true },
+    start: { type: Array, require: true },
+    end: { type: Array, require: true },
+    position: { type: Array, require: true },
+    department: { type: String },
+    job_content: { type: String, require: true },
+    job_performance: { type: String }
 })
 const projectexpSchema = new mongoose.Schema({
-    'project_name': { type: String, require: true },
-    'charactor': { type: String, require: true },
-    'start': { type: Array, require: true },
-    'end': { type: Array, require: true },
-    'project_content': { type: String, require: true },
-    'project_performance': { type: String },
-    'link': { type: String }
+    project_name: { type: String, require: true },
+    charactor: { type: String, require: true },
+    start: { type: Array, require: true },
+    end: { type: Array, require: true },
+    project_content: { type: String, require: true },
+    project_performance: { type: String },
+    link: { type: String }
 })
 const eduexpSchema = new mongoose.Schema({
     edu_bg: { type: Array, require: true },
@@ -45,28 +45,38 @@ const eduexpSchema = new mongoose.Schema({
     edu_time: { type: Array, require: true },
     school_exp: { type: String, require: true }
 })
+const companyInfoSchema = new mongoose.Schema({
+    financing: { type: String, require: true },
+    scale: { type: String, require: true },
+    trade: { type: String, require: true },
+    introduction: { type: String, require: true },
+    address: { type: Array, require: true },
+    web: { type: Array }
+})
 
 const users = mongoose.model('users', new mongoose.Schema({
-    'user': { type: String, require: true },
-    'pwd': { type: String, require: true },
-    'type': { type: Number, require: true },
-    'avatar': { type: String },//头像
-    'nickname': { type: String },//称呼
-    'city': { type: String },//城市
+    user: { type: String, require: true },
+    pwd: { type: String, require: true },
+    type: { type: Number, require: true },
+    avatar: { type: String },//头像
+    nickname: { type: String },//称呼
+    city: { type: String },//城市
     //BOSS
-    'position': { type: String },//职位
-    'company': { type: String },//公司名称
+    position: { type: String },//职位
+    company: { type: String },//公司名称
+    company_info: companyInfoSchema,//公司信息
     //牛人
-    'sex': { type: String }, //性别
+    sex: { type: String }, //性别
 }))
 const resumes = mongoose.model('resumes', new mongoose.Schema({
-    'user_id': { type: String, require: true },
-    'basic_info': { type: Object, require: true },
-    'job_want': [jobwantSchema],
-    'work_exp': [workexpSchema],
-    'project_exp': [projectexpSchema],
-    'edu_exp': [eduexpSchema]
+    user_id: { type: String, require: true },
+    basic_info: { type: Object, require: true },
+    job_want: [jobwantSchema],
+    work_exp: [workexpSchema],
+    project_exp: [projectexpSchema],
+    edu_exp: [eduexpSchema]
 }))
+
 
 
 

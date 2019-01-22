@@ -421,5 +421,48 @@ Router.post('/resume/delete_exp', function (req, res) {
         }
     )
 })
+//公司-更新基本信息
+Router.post('/company/basic', function (req, res) {
+    let data = {
+        financing: JSON.parse(req.body.financing),
+        scale: JSON.parse(req.body.scale),
+        trade: req.body.trade
+    }
+    let company_info
+    User.findOne(
+        { _id: req.cookies.user_id },
+        function (err, doc) {
+            if (!err) {
+                if (doc.company_info) {
+                    company_info = doc.company_info
+                    company_info.financing = data.financing
+                    company_info.scale = data.scale
+                    company_info.trade = data.trade
+                } else {
+                    company_info = data
+                }
+                User.updateOne(
+                    { _id: req.cookies.user_id },
+                    {
+                        $set: {
+                            company_info: company_info
+                        }
+                    },
+                    function (err) {
+                        if (!err) {
+                            res.send({
+                                code: 0,
+                                company_info: company_info
+                            })
+                        } else {
+                            res.send({
+                                code: 1
+                            })
+                        }
+                    }
+                )
+            }
+        })
+})
 
 module.exports = Router

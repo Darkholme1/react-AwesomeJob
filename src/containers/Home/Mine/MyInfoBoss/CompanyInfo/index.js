@@ -13,11 +13,27 @@ class CompanyInfo extends Component {
         super(props)
         this.state = {
             touch: '',
-            activeItemIndex: 0
+            activeItemIndex: 0,
+            company: '',
+            basic: {
+                financing: '',
+                scale: '',
+                trade: ''
+            }
         }
     }
     componentDidMount() {
         document.querySelector('body').setAttribute('style', 'background:white')
+        setTimeout(() => {
+            this.setState({
+                company: this.props.state.user.company,
+                basic: {
+                    financing:this.props.state.user.company_info.financing,
+                    scale: this.props.state.user.company_info.scale,
+                    trade: this.props.state.user.company_info.trade
+                }
+            })
+        }, 0);
     }
     componentWillUnmount() {
         document.querySelector('body').removeAttribute('style')
@@ -53,14 +69,24 @@ class CompanyInfo extends Component {
                             this.props.history.push('/company_basic')
                         }}>
                         <div tag="innerContainer" style={style.innerContainerBasic}>
-                            <div tag="data-information" style={style.dataInformation}>
+                            <div tag="data-information">
                                 <div tag="nameAndIcon" style={style.nameAndIcon}>
                                     <span style={{ fontSize: '1.5em', fontWeight: 'bold', marginRight: '10px' }}>
-                                        杭州老王科技有限公司
+                                        {this.state.company}
                                     </span>
                                     <img src={require('../../../../../resource/image/icon/edit.png')} style={{ width: '15px', height: '15px' }} />
                                 </div>
+                                <div tag="worktime-age-education" style={{ color: 'rgb(136,136,136)', marginTop: '10px' }}>
+                                    <span>
+                                        {
+                                            this.state.basic.financing+' · '+
+                                            this.state.basic.scale+' · '+
+                                            this.state.basic.trade
+                                        }
+                                    </span>
+                                </div>
                             </div>
+
                         </div>
                     </div>
                     <div tag="job-want">
@@ -68,12 +94,12 @@ class CompanyInfo extends Component {
                             <span style={{ fontSize: '18px', fontWeight: 'bold', ...style.itemPadding }}>公司介绍</span>
                             <div style={style.itemContainer} onClick={() => { this.props.history.push('/edit_company_introduce') }}>
                                 <div
-                                    style={this.state.touch === 'web' ?
+                                    style={this.state.touch === 'introduce' ?
                                         { ...style.itemBox, ...style.bgTap } :
                                         style.itemBox}
                                     onTouchStart={() => {
                                         this.setState({
-                                            touch: 'web'
+                                            touch: 'introduce'
                                         })
                                     }}
                                     onTouchEnd={() => {
