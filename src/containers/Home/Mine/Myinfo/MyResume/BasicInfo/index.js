@@ -99,7 +99,7 @@ class BasicInfo extends Component {
                 if (values.nickname === this.props.state.user.nickname) {
                     delete basic_info.nickname
                 }
-                axios.post('/user/resume/basicinfo', {
+                axios.post('/resume/basicinfo', {
                     ...basic_info
                 }).then((res) => {
                     //如果有改动姓名，更新redux中的nickname

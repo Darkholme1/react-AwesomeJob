@@ -130,7 +130,7 @@ class AddWorkExp extends Component {
         ])
         if (submit === 1) {
             if (!this.state.isEdit) {
-                axios.post('/user/resume/update_exp', {
+                axios.post('/resume/update_exp', {
                     exp: JSON.stringify(this.state.workExp),
                     is_edit: 0,
                     type: 1
@@ -146,7 +146,7 @@ class AddWorkExp extends Component {
                     console.log(err)
                 })
             } else {
-                axios.post('/user/resume/update_exp', {
+                axios.post('/resume/update_exp', {
                     exp: JSON.stringify(this.state.workExp),
                     is_edit: 1,
                     type: 1
@@ -171,7 +171,7 @@ class AddWorkExp extends Component {
             { text: '取消', onPress: () => { } },
             {
                 text: '确认', onPress: () => {
-                    axios.post('/user/resume/delete_exp', {
+                    axios.post('/resume/delete_exp', {
                         _id: this.state.workExp._id,
                         type: 1
                     }).then(res => {

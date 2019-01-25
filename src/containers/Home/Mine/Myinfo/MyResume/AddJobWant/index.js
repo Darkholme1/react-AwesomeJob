@@ -57,7 +57,7 @@ class AddJobWant extends Component {
             }
         ])
         if (submit === 1) {
-            axios.post('/user/resume/add_jobwant', {
+            axios.post('/resume/add_jobwant', {
                 job_name: JSON.stringify(this.state.jobName),
                 city: this.state.city[0],
                 salary: JSON.stringify(this.state.salary)
@@ -88,7 +88,7 @@ class AddJobWant extends Component {
             }
         });
         console.log(jobWantAll)
-        axios.post('/user/resume/update_jobwant', {
+        axios.post('/resume/update_jobwant', {
             jobwant_new: JSON.stringify(jobWantAll)
         }).then((res) => {
             if (res.data.code === 0) {
@@ -115,7 +115,7 @@ class AddJobWant extends Component {
                             arr.splice(index, 1)
                         }
                     });
-                    axios.post('/user/resume/update_jobwant', {
+                    axios.post('/resume/update_jobwant', {
                         jobwant_new: JSON.stringify(jobWantAll)
                     }).then((res) => {
                         if (res.data.code === 0) {

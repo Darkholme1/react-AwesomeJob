@@ -1,5 +1,6 @@
 const express = require('express');
 const userRouter = require('./user')
+const resumeRouter = require('./resume')
 const cookieParser = require('cookie-parser')
 
 /* mongoose.connect(DB_URL, {useNewUrlParser:true}, function(err){
@@ -20,6 +21,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser())
 app.use('/user',userRouter)
+app.use('/resume',resumeRouter)
 
 
 //设置跨域访问

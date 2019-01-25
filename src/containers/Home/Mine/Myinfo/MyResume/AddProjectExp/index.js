@@ -130,7 +130,7 @@ class AddProjectExp extends Component {
         if (submit === 1) {
             if (!this.state.isEdit) {
                 // console.log(this.state.workExp)
-                axios.post('/user/resume/update_exp', {
+                axios.post('/resume/update_exp', {
                     exp: JSON.stringify(this.state.projectExp),
                     is_edit: 0,
                     type: 2
@@ -146,7 +146,7 @@ class AddProjectExp extends Component {
                     console.log(err)
                 })
             } else {
-                axios.post('/user/resume/update_exp', {
+                axios.post('/resume/update_exp', {
                     exp: JSON.stringify(this.state.projectExp),
                     is_edit: 1,
                     type: 2
@@ -170,7 +170,7 @@ class AddProjectExp extends Component {
             { text: '取消', onPress: () => { } },
             {
                 text: '确认', onPress: () => {
-                    axios.post('/user/resume/delete_exp', {
+                    axios.post('/resume/delete_exp', {
                         _id: this.state.projectExp._id,
                         type: 2
                     }).then(res => {

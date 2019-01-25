@@ -91,14 +91,14 @@ class MyinfoBoss extends Component {
                         arrow="horizontal"
                         thumb={require('../../../../resource/image/icon/company.png')}
                         multipleLine
-                        onClick={() => { this.props.history.push('/CompanyInfo') }}>
+                        onClick={() => { this.props.history.push('/companyinfo') }}>
                         公司详情
                     </Item>
                     <Item
                         arrow="horizontal"
                         thumb={require('../../../../resource/image/icon/jobwant.png')}
                         multipleLine
-                        onClick={() => { this.props.history.push('/myresume') }}>
+                        onClick={() => { this.props.history.push('/job_management') }}>
                         职位管理
                     </Item>
                     <Item

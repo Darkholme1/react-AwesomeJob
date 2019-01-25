@@ -40,7 +40,7 @@ class MyResume extends Component {
         if (sessionStorage.isEdit) {
             sessionStorage.removeItem('isEdit')
         }
-        axios.get('/user/resume/query').then((res) => {
+        axios.get('/resume/query').then((res) => {
             this.setState({
                 resume: res.data,
                 axiosOk: 1
@@ -78,7 +78,7 @@ class MyResume extends Component {
         })
     }
     componentDidMount() {
-        /* axios.get('/user/resume').then((res) => {
+        /* axios.get('/resume').then((res) => {
             if (res.data.resume.length > 0) {
 
             }

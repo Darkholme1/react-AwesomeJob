@@ -1,4 +1,5 @@
-import deepCopy from './deepCopy'
+
+const deepCopy = require('./deepCopy')
 export const pickerCity = [
     {
         label: '北京',
@@ -151,6 +152,32 @@ export const pickerPPLNum = [
         value: '10000人以上'
     }
 ]
+export const pickerWorkExp = [
+    {
+        label: '无经验要求',
+        value: '无经验要求',
+    },
+    {
+        label: '应届生',
+        value: '应届生',
+    },
+    {
+        label: '1年以内',
+        value: '1年以内'
+    },
+    {
+        label: '1-3年',
+        value: '1-3年'
+    },
+    {
+        label: '3-5年',
+        value: '3-5年'
+    },
+    {
+        label: '5年以上',
+        value: '5年以上'
+    }
+]
 
 let pickerSalary = [
     {
@@ -209,7 +236,7 @@ pickerWorkEnd.unshift({
     value: '0'
 })
 
-export { pickerWorkTime,pickerWorkEnd }
+export { pickerWorkTime, pickerWorkEnd }
 
 let pickerEduTime = []
 for (var i = currentYear; i >= 1990; i--) {

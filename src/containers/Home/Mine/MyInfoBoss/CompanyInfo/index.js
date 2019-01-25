@@ -1,9 +1,6 @@
 import React, { Component } from 'react';
 import { NavBar, Icon, List, InputItem, Picker, Button } from 'antd-mobile'
 import style from './style'
-
-import { createForm } from 'rc-form'
-
 import { connect } from 'react-redux'
 
 import commonStyle from '../../../../style'
@@ -19,7 +16,10 @@ class CompanyInfo extends Component {
                 financing: '',
                 scale: '',
                 trade: ''
-            }
+            },
+            introduction: '',
+            address: [],
+            web: []
         }
     }
     componentDidMount() {
@@ -28,10 +28,13 @@ class CompanyInfo extends Component {
             this.setState({
                 company: this.props.state.user.company,
                 basic: {
-                    financing:this.props.state.user.company_info.financing,
+                    financing: this.props.state.user.company_info.financing,
                     scale: this.props.state.user.company_info.scale,
                     trade: this.props.state.user.company_info.trade
-                }
+                },
+                introduction: this.props.state.user.company_info.introduction,
+                address: this.props.state.user.company_info.address,
+                web: this.props.state.user.company_info.web
             })
         }, 0);
     }
@@ -79,8 +82,8 @@ class CompanyInfo extends Component {
                                 <div tag="worktime-age-education" style={{ color: 'rgb(136,136,136)', marginTop: '10px' }}>
                                     <span>
                                         {
-                                            this.state.basic.financing+' · '+
-                                            this.state.basic.scale+' · '+
+                                            this.state.basic.financing + ' · ' +
+                                            this.state.basic.scale + ' · ' +
                                             this.state.basic.trade
                                         }
                                     </span>
@@ -92,7 +95,15 @@ class CompanyInfo extends Component {
                     <div tag="job-want">
                         <div tag="innerContainer" style={style.innerContainerItem}>
                             <span style={{ fontSize: '18px', fontWeight: 'bold', ...style.itemPadding }}>公司介绍</span>
-                            <div style={style.itemContainer} onClick={() => { this.props.history.push('/edit_company_introduce') }}>
+                            <div style={style.itemContainer}
+                                onClick={() => {
+                                    this.props.history.push({
+                                        pathname: '/edit_company_introduce',
+                                        query: {
+                                            introduction: this.state.introduction
+                                        }
+                                    })
+                                }}>
                                 <div
                                     style={this.state.touch === 'introduce' ?
                                         { ...style.itemBox, ...style.bgTap } :
@@ -110,12 +121,7 @@ class CompanyInfo extends Component {
                                 >
                                     <div style={style.itemHeader}>
                                         <section style={{ ...style.itemContent, width: '90%', marginTop: '0' }}>
-                                            哇雷瓦雷瓦空寂你娃空寂你娃空寂你娃
-                                            空寂你娃空寂你娃啊啊撒旦吉萨可怜的
-                                            健身卡立即打开领导卡拉季凯撒觉得拉丝机是
-                                            哇雷瓦雷瓦空寂你娃空寂你娃空寂你娃
-                                            空寂你娃空寂你娃啊啊撒旦吉萨可怜的
-                                            健身卡立即打开领导卡拉季凯撒觉得拉丝机是
+                                            {this.state.introduction}
                                         </section>
                                         <Icon type="right" size="xs" color="rgb(136, 136, 136)" />
                                     </div>
@@ -130,54 +136,52 @@ class CompanyInfo extends Component {
                         <div tag="innerContainer" style={{ ...style.innerContainerItem, paddingTop: '0' }}>
                             <span style={{ fontSize: '18px', fontWeight: 'bold', ...style.itemPadding }}>公司地址</span>
                             <div style={style.itemContainer}>
-                                <div
-                                    style={this.state.touch === 'web' ?
-                                        { ...style.itemBox, ...style.bgTap } :
-                                        style.itemBox}
-                                    onTouchStart={() => {
-                                        this.setState({
-                                            touch: 'web'
-                                        })
-                                    }}
-                                    onTouchEnd={() => {
-                                        this.setState({
-                                            touch: ''
-                                        })
-                                    }}>
-                                    <div style={style.itemHeader}>
-                                        <span style={style.itemTitle}>浙江华云信息科技有限公司</span>
+                                {(() => {
+                                    return this.state.address.map((current, index, arr) => {
+                                        return <div
+                                        key={index}
+                                            style={this.state.touch === `addr${index}` ?
+                                                { ...style.itemBox, ...style.bgTap } :
+                                                style.itemBox}
+                                            onTouchStart={() => {
+                                                this.setState({
+                                                    touch: `addr${index}`
+                                                })
+                                            }}
+                                            onTouchEnd={() => {
+                                                this.setState({
+                                                    touch: ''
+                                                })
+                                            }}
+                                            onClick={() => {
+                                                this.props.history.push({
+                                                    pathname: '/company_address',
+                                                    query: {
+                                                        address: this.state.address,
+                                                        index: index
+                                                    }
+                                                })
+                                            }}>
+                                            <div style={style.itemHeader}>
+                                                <span style={style.itemTitle}>{current}</span>
 
-                                        <Icon type="right" size="xs" color="rgb(136, 136, 136)" />
+                                                <Icon type="right" size="xs" color="rgb(136, 136, 136)" />
 
-                                    </div>
-                                </div>
-                                <div
-                                    style={this.state.touch === 'web' ?
-                                        { ...style.itemBox, ...style.bgTap } :
-                                        style.itemBox}
-                                    onTouchStart={() => {
-                                        this.setState({
-                                            touch: 'web'
-                                        })
-                                    }}
-                                    onTouchEnd={() => {
-                                        this.setState({
-                                            touch: ''
-                                        })
-                                    }}>
-                                    <div style={style.itemHeader}>
-                                        <span style={style.itemTitle}>浙江华云信息科技有限公司</span>
-
-                                        <Icon type="right" size="xs" color="rgb(136, 136, 136)" />
-
-                                    </div>
-                                </div>
-
-
+                                            </div>
+                                        </div>
+                                    })
+                                })()}
                             </div>
 
                             <div style={{ ...style.itemPadding, ...style.btnContainer }}>
-                                <Button onClick={() => { this.props.history.push('/company_address') }}>添加公司地址</Button>
+                                <Button onClick={() => {
+                                    this.props.history.push({
+                                        pathname: '/company_address',
+                                        query: {
+                                            address: this.state.address
+                                        }
+                                    })
+                                }}>添加公司地址</Button>
                                 <div style={style.itemBottom}></div>
                             </div>
                         </div>
@@ -186,51 +190,52 @@ class CompanyInfo extends Component {
                         <div tag="innerContainer" style={style.innerContainerItem}>
                             <span style={{ fontSize: '18px', fontWeight: 'bold', ...style.itemPadding }}>公司官网</span>
                             <div style={style.itemContainer}>
-                                <div
-                                    style={this.state.touch === 'web' ?
-                                        { ...style.itemBox, ...style.bgTap } :
-                                        style.itemBox}
-                                    onTouchStart={() => {
-                                        this.setState({
-                                            touch: 'web'
-                                        })
-                                    }}
-                                    onTouchEnd={() => {
-                                        this.setState({
-                                            touch: ''
-                                        })
-                                    }}>
-                                    <div style={style.itemHeader}>
-                                        <span style={style.itemTitle}>浙江华云信息科技有限公司</span>
 
-                                        <Icon type="right" size="xs" color="rgb(136, 136, 136)" />
+                                {(() => {
+                                    return this.state.web.map((current, index, arr) => {
+                                        return <div
+                                        key={index}
+                                            style={this.state.touch === `web${index}` ?
+                                                { ...style.itemBox, ...style.bgTap } :
+                                                style.itemBox}
+                                            onTouchStart={() => {
+                                                this.setState({
+                                                    touch: `web${index}`
+                                                })
+                                            }}
+                                            onTouchEnd={() => {
+                                                this.setState({
+                                                    touch: ''
+                                                })
+                                            }}
+                                            onClick={() => {
+                                                this.props.history.push({
+                                                    pathname: '/company_web',
+                                                    query: {
+                                                        web: this.state.web,
+                                                        index: index
+                                                    }
+                                                })
+                                            }}>
+                                            <div style={style.itemHeader}>
+                                                <span style={style.itemTitle}>{current}</span>
 
-                                    </div>
-                                </div>
-                                <div
-                                    style={this.state.touch === 'web' ?
-                                        { ...style.itemBox, ...style.bgTap } :
-                                        style.itemBox}
-                                    onTouchStart={() => {
-                                        this.setState({
-                                            touch: 'web'
-                                        })
-                                    }}
-                                    onTouchEnd={() => {
-                                        this.setState({
-                                            touch: ''
-                                        })
-                                    }}>
-                                    <div style={style.itemHeader}>
-                                        <span style={style.itemTitle}>浙江华云信息科技有限公司</span>
+                                                <Icon type="right" size="xs" color="rgb(136, 136, 136)" />
 
-                                        <Icon type="right" size="xs" color="rgb(136, 136, 136)" />
-
-                                    </div>
-                                </div>
+                                            </div>
+                                        </div>
+                                    })
+                                })()}
                             </div>
                             <div style={{ ...style.itemPadding, ...style.btnContainer }}>
-                                <Button onClick={() => { this.props.history.push('/addprojectexp') }}>添加链接</Button>
+                                <Button onClick={() => {
+                                    this.props.history.push({
+                                        pathname: '/company_web',
+                                        query: {
+                                            web: this.state.web
+                                        }
+                                    })
+                                }}>添加链接</Button>
                                 <div style={style.itemBottom}></div>
                             </div>
                         </div>

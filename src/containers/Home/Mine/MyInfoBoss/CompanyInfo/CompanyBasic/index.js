@@ -50,10 +50,13 @@ class CompanyBasic extends Component {
             }
         ])
         if (submit === 1) {
-            axios.post('/user/company/basic', {
-                financing: JSON.stringify(this.state.financing),
-                scale: JSON.stringify(this.state.scale),
+            let data = {
+                financing: this.state.financing[0],
+                scale: this.state.scale[0],
                 trade: this.state.trade
+            }
+            axios.post('/user/company', {
+                data: JSON.stringify(data)
             }).then(res => {
                 if (res.data.code === 0) {
                     this.props.updateUser({
