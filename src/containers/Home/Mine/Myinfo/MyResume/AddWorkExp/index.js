@@ -135,7 +135,6 @@ class AddWorkExp extends Component {
                     is_edit: 0,
                     type: 1
                 }).then(res => {
-                    // console.log(res)
                     if (res.data.code === 0) {
                         Toast.info("添加成功", 1.5, () => {
                             this.props.history.goBack()
@@ -151,7 +150,6 @@ class AddWorkExp extends Component {
                     is_edit: 1,
                     type: 1
                 }).then(res => {
-                    // console.log(res)
                     if (res.data.code === 0) {
                         Toast.info("保存成功", 1.5)
                         setTimeout(() => {
@@ -175,7 +173,6 @@ class AddWorkExp extends Component {
                         _id: this.state.workExp._id,
                         type: 1
                     }).then(res => {
-                        console.log(res)
                         if (res.data.code === 0) {
                             Toast.info('删除成功', 1.5, () => {
                                 this.props.history.goBack()

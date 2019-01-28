@@ -71,7 +71,6 @@ class MyResume extends Component {
                 }
 
             })
-            // console.log(this.state.resume)
         }).catch((err) => {
             Toast.info('未知错误', 1.5)
             console.log(err)

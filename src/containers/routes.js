@@ -21,6 +21,7 @@ import CompanyAddress from './Home/Mine/MyInfoBoss/CompanyInfo/CompanyAddress'
 import CompanyWeb from './Home/Mine/MyInfoBoss/CompanyInfo/CompanyWeb'
 import JobManagement from './Home/Mine/MyInfoBoss/JobManagement'
 import AddJob from './Home/Mine/MyInfoBoss/JobManagement/AddJob'
+import JobDetail from './Home/Mine/MyInfoBoss/JobManagement/AddJob/JobDetail'
 import JobContent from './Home/Mine/Myinfo/MyResume/AddWorkExp/JobContent'
 import JobPerformance from './Home/Mine/Myinfo/MyResume/AddWorkExp/JobPerformance'
 import ProjectContent from './Home/Mine/Myinfo/MyResume/AddProjectExp/ProjectContent'
@@ -53,5 +54,6 @@ export {
     SchoolExp,
     CompanyWeb,
     JobManagement,
-    AddJob
+    AddJob,
+    JobDetail
 }

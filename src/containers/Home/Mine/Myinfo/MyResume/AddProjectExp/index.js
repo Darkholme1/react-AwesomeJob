@@ -129,13 +129,11 @@ class AddProjectExp extends Component {
         ])
         if (submit === 1) {
             if (!this.state.isEdit) {
-                // console.log(this.state.workExp)
                 axios.post('/resume/update_exp', {
                     exp: JSON.stringify(this.state.projectExp),
                     is_edit: 0,
                     type: 2
                 }).then(res => {
-                    // console.log(res)
                     if (res.data.code === 0) {
                         Toast.info("添加成功", 1.5, () => {
                             this.props.history.goBack()
@@ -151,7 +149,6 @@ class AddProjectExp extends Component {
                     is_edit: 1,
                     type: 2
                 }).then(res => {
-                    // console.log(res)
                     if (res.data.code === 0) {
                         Toast.info("保存成功", 1.5)
                         setTimeout(() => {
@@ -174,7 +171,6 @@ class AddProjectExp extends Component {
                         _id: this.state.projectExp._id,
                         type: 2
                     }).then(res => {
-                        console.log(res)
                         if (res.data.code === 0) {
                             Toast.info('删除成功', 1.5, () => {
                                 this.props.history.goBack()

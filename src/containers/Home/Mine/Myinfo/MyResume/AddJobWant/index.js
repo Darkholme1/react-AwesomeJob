@@ -62,7 +62,6 @@ class AddJobWant extends Component {
                 city: this.state.city[0],
                 salary: JSON.stringify(this.state.salary)
             }).then((res) => {
-                console.log(res)
                 if (res.data.code === 0) {
                     Toast.info('添加成功', 1.5)
                     setTimeout(() => {
@@ -87,7 +86,6 @@ class AddJobWant extends Component {
                 }
             }
         });
-        console.log(jobWantAll)
         axios.post('/resume/update_jobwant', {
             jobwant_new: JSON.stringify(jobWantAll)
         }).then((res) => {
@@ -107,8 +105,6 @@ class AddJobWant extends Component {
             { text: '取消' },
             {
                 text: '确认', onPress: () => {
-
-                    console.log(this.props.location.query.jobWantAll)
                     var jobWantAll = this.props.location.query.jobWantAll
                     jobWantAll.forEach((current, index, arr) => {
                         if (current._id === this.props.location.query.jobWant._id) {

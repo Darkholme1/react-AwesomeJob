@@ -15,6 +15,7 @@ mongoose.connect(DB_URL, { useNewUrlParser: true }, function (err) {
     education_exp: { type: Array },
     github: { type: Array }
 })) */
+//子文档
 const jobwantSchema = new mongoose.Schema({
     job_name: { type: Array, require: true },
     city: { type: String, require: true },
@@ -54,6 +55,7 @@ const companyInfoSchema = new mongoose.Schema({
     web: { type: Array }
 })
 
+//文档
 const users = mongoose.model('users', new mongoose.Schema({
     user: { type: String, require: true },
     pwd: { type: String, require: true },
@@ -76,13 +78,23 @@ const resumes = mongoose.model('resumes', new mongoose.Schema({
     project_exp: [projectexpSchema],
     edu_exp: [eduexpSchema]
 }))
+const jobs = mongoose.model('jobs', new mongoose.Schema({
+    user_id: { type: String, require: true },
+    job_name: {type:String,require: true},
+    salary: { type: Array, require: true },
+    address: { type: String, require: true },
+    work_exp: { type: String, require: true },
+    education: { type: String, require: true },
+    detail: { type: String, require: true }
+}))
 
 
 
 
 module.exports = {
     users: users,
-    resumes: resumes
+    resumes: resumes,
+    jobs: jobs
     /* getModel: function (name) {
         return mongoose.model(name)
     } */

@@ -73,7 +73,6 @@ class GeniusInfo extends Component {
                 },
             ])
             if (submit === 1) {
-                console.log(this.state.birthValue)
                 axios.post('/user/userinfo', {
                     type: datatype.user('牛人'),
                     city: values.city[0],

@@ -4,6 +4,10 @@ import { NavBar, Icon, Button } from 'antd-mobile'
 import style from './style'
 
 class JobManagement extends Component {
+    constructor(props){
+        super(props)
+        sessionStorage.removeItem('job')
+    }
     render() {
         return (
             <div>

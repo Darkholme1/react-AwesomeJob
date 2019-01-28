@@ -16,7 +16,6 @@ class AuthRoute extends Component {
     }
     componentDidMount() {
         if (Object.keys(this.props.state.user).length === 0) {
-            // console.log(this)
             axios.get('/user/cookie').then((res) => {
                 if (res.data.code === 1) {
                     Toast.info('请先登录', 1.5)

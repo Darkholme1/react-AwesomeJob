@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
 import { NavBar, Icon, Button, List, InputItem, Picker } from 'antd-mobile'
 
+import { connect } from 'react-redux'
+
 import { pickerSalary, pickerCity, pickerWorkExp, pickerEduBg } from '@/common/picker'
 import formvalidate from '@/common/formvalidate'
 import axios from '@/api/axios'
+import commonStyle from '@/containers/style'
 
 class AddJob extends Component {
     constructor(props) {
@@ -11,14 +14,57 @@ class AddJob extends Component {
         this.state = {
             isEdit: 0,
             job: {
-                jobName: '',
+                job_name: '',
                 salary: '',
-                city: '',
-                workExp: '',
+                address: [],
+                work_exp: '',
                 education: '',
                 detail: ''
-            }
+            },
+            pickerAddress: []
         }
+    }
+    componentDidMount() {
+        if (this.props.state.user.company_info) {
+            let address = this.props.state.user.company_info.address
+            let pickerAddress = []
+            if (address.length > 0){
+                address.forEach(current=>{
+                    pickerAddress.push({
+                        label: current,
+                        value: current
+                    })
+                })
+            }else{
+                pickerAddress = [
+                    {
+                        label: '暂无工作地址',
+                        value: '暂无工作地址'
+                    }
+                ]
+            }
+            this.setState({
+                pickerAddress: pickerAddress
+            })
+            
+        }
+
+
+        if (sessionStorage.job) {
+            this.setState({
+                job: JSON.parse(sessionStorage.job)
+            })
+        }
+    }
+    submit() {
+        if(this.state.isEdit){
+
+        }else{
+            
+        }
+    }
+    delete() {
+
     }
     render() {
         const Item = List.Item
@@ -35,12 +81,12 @@ class AddJob extends Component {
                     <InputItem
                         clear
                         placeholder="请输入职位名称"
-                        value={this.state.job.jobName}
+                        value={this.state.job.job_name}
                         onChange={v => {
                             this.setState({
                                 job: {
                                     ...this.state.job,
-                                    jobName: v
+                                    job_name: v
                                 }
                             })
                         }}
@@ -61,11 +107,11 @@ class AddJob extends Component {
                     <Picker
                         data={pickerWorkExp}
                         cols={1}
-                        value={this.state.workExp}
+                        value={this.state.job.work_exp}
                         onOk={v => this.setState({
                             job: {
                                 ...this.state.job,
-                                workExp: v
+                                work_exp: v
                             }
                         })}>
                         <List.Item arrow="horizontal">经验要求</List.Item>
@@ -73,7 +119,7 @@ class AddJob extends Component {
                     <Picker
                         data={pickerEduBg}
                         cols={1}
-                        value={this.state.education}
+                        value={this.state.job.education}
                         onOk={v => this.setState({
                             job: {
                                 ...this.state.job,
@@ -84,13 +130,13 @@ class AddJob extends Component {
                     </Picker>
                     {/* 在已有的公司地址中选择 */}
                     <Picker
-                        data={pickerCity}
+                        data={this.state.pickerAddress}
                         cols={1}
-                        value={this.state.city}
+                        value={this.state.job.address}
                         onOk={v => this.setState({
                             job: {
                                 ...this.state.job,
-                                city: v
+                                address: v
                             }
                         })}>
                         <List.Item arrow="horizontal">工作地点</List.Item>
@@ -105,12 +151,28 @@ class AddJob extends Component {
                             if (this.state.isEdit) {
                                 sessionStorage.isEdit = 1
                             }
-                            this.props.history.push('/job_content')
+                            sessionStorage.job = JSON.stringify(this.state.job)
+                            this.props.history.push('/job_detail')
                         }}>职位详情</Item>
                 </List>
+                <div style={{ ...commonStyle.footerBtnContainer, ...this.state.buttonStyle }}>
+                    {
+                        (() => {
+                            return this.state.isEdit ?
+                                <Button type="warning" style={commonStyle.footerBtn} onClick={() => { this.delete() }}>删除本条</Button> :
+                                <Button type="primary" style={commonStyle.footerBtn} onClick={() => { this.submit() }}>保存</Button>
+                        })()
+                    }
+                </div>
             </div>
         );
     }
 }
+
+const mapStateProps = state => {
+    return { state }
+}
+const actionCreator = {}
+AddJob = connect(mapStateProps, actionCreator)(AddJob)
 
 export default AddJob;

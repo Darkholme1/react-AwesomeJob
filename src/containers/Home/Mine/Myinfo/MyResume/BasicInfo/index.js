@@ -114,7 +114,6 @@ class BasicInfo extends Component {
                             this.props.history.goBack()
                         }, 1500);
                     }
-                    console.log(res)
                 }).catch((err) => {
                     console.log(err)
                 })

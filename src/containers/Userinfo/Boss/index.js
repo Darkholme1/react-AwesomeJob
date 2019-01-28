@@ -95,7 +95,6 @@ class BossInfo extends Component {
                 },
             ])
             if (submit === 1) {
-                console.log(values.city[0])
                 axios.post('/user/userinfo', {
                     type: datatype.user('BOSS'),
                     city: values.city[0],
@@ -105,7 +104,6 @@ class BossInfo extends Component {
                     company: values.company,
                     address: values.address
                 }).then((res) => {
-                    console.log(res)
                     if (res.data.code === 1) {
                         Toast.info('未知错误')
                     } else {

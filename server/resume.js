@@ -3,7 +3,6 @@ const Router = express.Router()
 const model = require('./model')
 const User = model.users
 const Resume = model.resumes
-const _hide = { 'pwd': 0 }//不读取密码
 
 //查询当前用户的简历
 Router.get('/query', function (req, res) {
@@ -94,7 +93,6 @@ Router.post('/add_jobwant', function (req, res) {
         } else {
             var job_want = doc.job_want
             job_want.push(obj)
-            // console.log(job_want)
             Resume.updateOne(
                 { user_id: req.cookies.user_id },
                 {
@@ -132,7 +130,6 @@ Router.post('/update_jobwant', function (req, res) {
 })
 //简历-添加或更新经历(逻辑在后端) type:1.工作经历,2.项目经历,3.教育经历
 Router.post('/update_exp', function (req, res) {
-    // console.log(JSON.parse(req.body.work_exp))
     Resume.findOne(
         { user_id: req.cookies.user_id },
         function (err, doc) {
@@ -169,7 +166,6 @@ Router.post('/update_exp', function (req, res) {
                         arr[index] = expNew
                     }
                 });
-                // console.log(workExp)
             }
             let setObj
             switch (type) {

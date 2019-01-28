@@ -42,7 +42,6 @@ class CompanyWeb extends Component {
                             data: JSON.stringify(data)
                         }).then(res => {
                             if (res.data.code === 0) {
-                                console.log(res.data.company_info)
                                 this.props.updateUser({
                                     company_info: res.data.company_info
                                 })
@@ -82,7 +81,6 @@ class CompanyWeb extends Component {
                     data: JSON.stringify(data)
                 }).then(res => {
                     if (res.data.code === 0) {
-                        console.log(res.data.company_info)
                         this.props.updateUser({
                             company_info: res.data.company_info
                         })

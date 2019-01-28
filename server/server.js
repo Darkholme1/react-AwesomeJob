@@ -1,6 +1,7 @@
 const express = require('express');
 const userRouter = require('./user')
 const resumeRouter = require('./resume')
+const jobRouter = require('./job')
 const cookieParser = require('cookie-parser')
 
 /* mongoose.connect(DB_URL, {useNewUrlParser:true}, function(err){
@@ -18,29 +19,30 @@ const User = mongoose.model('bs_users',new mongoose.Schema({
 const app = express();
 const bodyParser = require('body-parser');
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser())
-app.use('/user',userRouter)
-app.use('/resume',resumeRouter)
+app.use('/user', userRouter)
+app.use('/resume', resumeRouter)
+app.use('/job', jobRouter)
 
 
 //设置跨域访问
-app.all('*', function(req, res, next) {
+app.all('*', function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "X-Requested-With");
-    res.header("Access-Control-Allow-Methods","PUT,POST,GET,DELETE,OPTIONS");
-    res.header("X-Powered-By",' 3.2.1')
+    res.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS");
+    res.header("X-Powered-By", ' 3.2.1')
     res.header("Content-Type", "application/json;charset=utf-8");
     next();
 });
-app.post('/test',function(req,res){
+app.post('/test', function (req, res) {
     res.send('123')
 })
 app.get('/cookie', function (req, res) {
     res.send(req.cookies)
     console.log(req.cookies)
 })
-app.get('/get_test',function(req,res){
+app.get('/get_test', function (req, res) {
     var response = {
         word1: req.query.word1,
         word2: req.query.word2,
@@ -49,7 +51,7 @@ app.get('/get_test',function(req,res){
     console.log(response)
     res.send(JSON.stringify(response))
 })
-app.post('/post_test',function(req,res){
+app.post('/post_test', function (req, res) {
     var response = {
         word1: req.body.word1,
         word2: req.body.word2,
