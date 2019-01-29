@@ -187,7 +187,7 @@ let pickerSalary = [
 ]
 for (var i = 1; i <= 30; i++) {
     var children = []
-    for (var j = i + 1; j <= i + 5; j++) {
+    for (var j = i + 1; j <= i + 10; j++) {
         children.push({
             label: j + 'k',
             value: j

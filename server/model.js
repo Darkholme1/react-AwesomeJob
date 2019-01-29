@@ -82,6 +82,7 @@ const jobs = mongoose.model('jobs', new mongoose.Schema({
     user_id: { type: String, require: true },
     job_name: {type:String,require: true},
     salary: { type: Array, require: true },
+    city: { type: Array, require: true },
     address: { type: String, require: true },
     work_exp: { type: String, require: true },
     education: { type: String, require: true },

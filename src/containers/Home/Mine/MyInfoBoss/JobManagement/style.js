@@ -7,7 +7,7 @@ const style = {
         marginBottom: '50px'
     },
     btn_add: {
-        borderRadius: '0', 
+        borderRadius: '0',
         fontSize: '17px',
         display: 'flex',
         justifyContent: 'center',
@@ -19,7 +19,7 @@ const style = {
         justifyContent: 'space-between'
     },
     jobListItem: {
-        backgroundColor: 'white',
+        background: 'white',
         padding: '10px 20px',
         marginBottom: '10px',
         transition: '.1s'
@@ -44,6 +44,15 @@ const style = {
         marginRight: '10px',
         padding: '3px 5px',
         borderRadius: '5px'
+    },
+    address: {
+        maxWidth: '130px',
+        overflow: 'hidden',
+        whiteSpace: 'nowrap',
+        textOverflow: 'ellipsis'
+    },
+    tagContainer: {
+        display: 'flex'
     }
 }
 export default style

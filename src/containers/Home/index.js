@@ -148,7 +148,7 @@ class Home extends Component {
                                     }}
                                     data-seed="logId"
                                 >
-                                    <GeniusList></GeniusList>
+                                    <GeniusList state={this.props.state}></GeniusList>
                                 </TabBar.Item>
                         })()}
                         <TabBar.Item
