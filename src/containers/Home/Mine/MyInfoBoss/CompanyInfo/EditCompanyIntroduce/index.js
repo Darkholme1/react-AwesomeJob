@@ -65,7 +65,7 @@ class EditCompanyIntroduce extends Component {
                     style={{ position: 'fixed', width: '100%', top: '0', zIndex: '2' }}>
                     公司介绍
                 </NavBar>
-                <List renderHeader={() => '编辑'} style={{ marginTop: '45px' }}>
+                <List renderHeader={() => '编辑'} style={{ marginTop: '45px',marginBottom:'70px' }}>
                     <TextareaItem
                         {...getFieldProps('content', {
                             initialValue: this.state.content,
