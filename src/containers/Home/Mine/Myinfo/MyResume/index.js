@@ -41,6 +41,7 @@ class MyResume extends Component {
             sessionStorage.removeItem('isEdit')
         }
         axios.get('/resume/query').then((res) => {
+            console.log(res.data)
             this.setState({
                 resume: res.data,
                 axiosOk: 1
@@ -63,12 +64,15 @@ class MyResume extends Component {
 
                     this.setState({
                         age: `${age} · ${work}`,
-                        jobWant: this.state.resume.job_want,
-                        workExp: this.state.resume.work_exp,
-                        projectExp: this.state.resume.project_exp,
-                        eduExp: this.state.resume.edu_exp
+
                     })
                 }
+                this.setState({
+                    jobWant: this.state.resume.job_want,
+                    workExp: this.state.resume.work_exp,
+                    projectExp: this.state.resume.project_exp,
+                    eduExp: this.state.resume.edu_exp
+                })
 
             })
         }).catch((err) => {

@@ -6,9 +6,34 @@ const Resume = model.resumes
 
 //查询当前用户的简历
 Router.get('/query', function (req, res) {
-    Resume.findOne({ user_id: req.cookies.user_id }, function (err, doc) {
+    Resume.findOne({ user: req.cookies.user_id }, function (err, doc) {
         res.send(doc)
     })
+})
+//简历列表
+Router.get('/list', function (req, res) {
+    Resume.find(
+        {
+            basic_info: { $ne: null },
+            job_want: { $ne: [] } //条件：有基本信息并且有求职期望
+        },
+        'job_want basic_info edu_exp').
+        populate({
+            path: 'user',
+            select: 'nickname city avatar'
+        }).exec(function (err, doc) {
+            if (!err) {
+                res.send({
+                    error: 0,
+                    doc: doc
+                })
+            } else {
+                res.send({
+                    error: 1
+                })
+            }
+        })
+
 })
 //简历-更新个人信息
 Router.post('/basicinfo', function (req, res) {
@@ -50,7 +75,7 @@ Router.post('/basicinfo', function (req, res) {
         )
     }
     Resume.updateOne(
-        { user_id: req.cookies.user_id },
+        { user: req.cookies.user_id },
         {
             $set: {
                 basic_info: basic_info
@@ -87,14 +112,14 @@ Router.post('/add_jobwant', function (req, res) {
         salary: JSON.parse(req.body.salary)
     }
     // var jobwant = new 
-    Resume.findOne({ user_id: req.cookies.user_id }, function (err, doc) {
+    Resume.findOne({ user: req.cookies.user_id }, function (err, doc) {
         if (err) {
             res.send(err)
         } else {
             var job_want = doc.job_want
             job_want.push(obj)
             Resume.updateOne(
-                { user_id: req.cookies.user_id },
+                { user: req.cookies.user_id },
                 {
                     $set: {
                         job_want: job_want
@@ -114,7 +139,7 @@ Router.post('/add_jobwant', function (req, res) {
 //简历-删除\更改求职期望(逻辑在前端)
 Router.post('/update_jobwant', function (req, res) {
     Resume.updateOne(
-        { user_id: req.cookies.user_id },
+        { user: req.cookies.user_id },
         {
             $set: {
                 job_want: JSON.parse(req.body.jobwant_new)
@@ -131,7 +156,7 @@ Router.post('/update_jobwant', function (req, res) {
 //简历-添加或更新经历(逻辑在后端) type:1.工作经历,2.项目经历,3.教育经历
 Router.post('/update_exp', function (req, res) {
     Resume.findOne(
-        { user_id: req.cookies.user_id },
+        { user: req.cookies.user_id },
         function (err, doc) {
             let expAll
             let type = JSON.parse(req.body.type)
@@ -193,7 +218,7 @@ Router.post('/update_exp', function (req, res) {
                 }
             }
             Resume.updateOne(
-                { user_id: req.cookies.user_id },
+                { user: req.cookies.user_id },
                 {
                     $set: setObj
                 },
@@ -211,7 +236,7 @@ Router.post('/update_exp', function (req, res) {
 //删除经历 type:1.工作经历,2.项目经历,3.教育经历
 Router.post('/delete_exp', function (req, res) {
     Resume.findOne(
-        { user_id: req.cookies.user_id },
+        { user: req.cookies.user_id },
         function (err, doc) {
             let expAll
             let type = JSON.parse(req.body.type)
@@ -264,7 +289,7 @@ Router.post('/delete_exp', function (req, res) {
                 }
             }
             Resume.updateOne(
-                { user_id: req.cookies.user_id },
+                { user: req.cookies.user_id },
                 {
                     $set: setObj
                 },

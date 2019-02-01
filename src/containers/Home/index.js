@@ -13,9 +13,9 @@ import Message from './Message'
 import Myinfo from './Mine/Myinfo'
 import MyinfoBoss from './Mine/MyInfoBoss'
 
-import emitter from '../../common/emitter'
+import Home2 from '../Home2'
 
-const datatype = require('../../common/datatype')
+import emitter from '../../common/emitter'
 
 class Home extends Component {
     constructor(props) {
@@ -92,8 +92,8 @@ class Home extends Component {
                         tintColor="#33A3F4"
                         barTintColor="white"
                     >
-                        {(() => {
-                            return this.props.state.user.type == 0 ?
+                        {
+                            this.props.state.user.type == 0 ?
                                 <TabBar.Item
                                     title="职位"
                                     key="job"
@@ -149,8 +149,9 @@ class Home extends Component {
                                     data-seed="logId"
                                 >
                                     <GeniusList state={this.props.state}></GeniusList>
+                                    {/* <Home2></Home2> */}
                                 </TabBar.Item>
-                        })()}
+                        }
                         <TabBar.Item
                             icon={
                                 <div style={{
@@ -211,11 +212,11 @@ class Home extends Component {
 
                         >
                             {/* <Myinfo state={this.props.state} logout={this.logout}></Myinfo> */}
-                            {(() => {
-                                return this.props.state.user.type == datatype.user('牛人') ?
+                            {
+                                this.props.state.user.type == 0 ?
                                     <Myinfo state={this.props.state} logout={this.logout}></Myinfo> :
                                     <MyinfoBoss state={this.props.state} logout={this.logout}></MyinfoBoss>
-                            })()}
+                            }
                         </TabBar.Item>
                     </TabBar>
                 </div>

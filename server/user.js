@@ -86,10 +86,12 @@ Router.post('/add', function (req, res) {
         if (err) {
             res.send({ code: 0 })
         } else {
-            var resume = new Resume({
-                user_id: doc._id
-            })
-            resume.save()
+            if (data.type == 0) {
+                var resume = new Resume({
+                    user: doc._id
+                })
+                resume.save()
+            }
             res.send(doc)
         }
     })

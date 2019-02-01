@@ -24,19 +24,26 @@ class CompanyInfo extends Component {
     }
     componentDidMount() {
         document.querySelector('body').setAttribute('style', 'background:white')
+
         setTimeout(() => {
             this.setState({
                 company: this.props.state.user.company,
-                basic: {
-                    financing: this.props.state.user.company_info.financing,
-                    scale: this.props.state.user.company_info.scale,
-                    trade: this.props.state.user.company_info.trade
-                },
-                introduction: this.props.state.user.company_info.introduction,
-                address: this.props.state.user.company_info.address,
-                web: this.props.state.user.company_info.web
             })
+            if (this.props.state.user.company_info) {
+                this.setState({
+                    
+                    basic: {
+                        financing: this.props.state.user.company_info.financing,
+                        scale: this.props.state.user.company_info.scale,
+                        trade: this.props.state.user.company_info.trade
+                    },
+                    introduction: this.props.state.user.company_info.introduction,
+                    address: this.props.state.user.company_info.address?this.props.state.user.company_info.address:[],
+                    web: this.props.state.user.company_info.web?this.props.state.user.company_info.web:[]
+                })
+            }
         }, 0);
+
     }
     componentWillUnmount() {
         document.querySelector('body').removeAttribute('style')
@@ -139,7 +146,7 @@ class CompanyInfo extends Component {
                                 {(() => {
                                     return this.state.address.map((current, index, arr) => {
                                         return <div
-                                        key={index}
+                                            key={index}
                                             style={this.state.touch === `addr${index}` ?
                                                 { ...style.itemBox, ...style.bgTap } :
                                                 style.itemBox}
@@ -194,7 +201,7 @@ class CompanyInfo extends Component {
                                 {(() => {
                                     return this.state.web.map((current, index, arr) => {
                                         return <div
-                                        key={index}
+                                            key={index}
                                             style={this.state.touch === `web${index}` ?
                                                 { ...style.itemBox, ...style.bgTap } :
                                                 style.itemBox}

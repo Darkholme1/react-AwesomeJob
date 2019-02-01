@@ -28,6 +28,8 @@ import ProjectContent from './Home/Mine/Myinfo/MyResume/AddProjectExp/ProjectCon
 import ProjectPerformance from './Home/Mine/Myinfo/MyResume/AddProjectExp/ProjectPerformance'
 import SchoolExp from './Home/Mine/Myinfo/MyResume/AddEducationExp/SchoolExp'
 
+import Home2 from './Home2'
+
 export { 
     Test, 
     Login, 
@@ -55,5 +57,6 @@ export {
     CompanyWeb,
     JobManagement,
     AddJob,
-    JobDetail
+    JobDetail,
+    Home2
 }

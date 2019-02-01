@@ -71,7 +71,12 @@ const users = mongoose.model('users', new mongoose.Schema({
     sex: { type: String }, //性别
 }))
 const resumes = mongoose.model('resumes', new mongoose.Schema({
-    user_id: { type: String, require: true },
+    // user_id: { type: String, require: true },
+    user: { type: mongoose.Schema.Types.ObjectId, ref: 'users' },
+    /* user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'users'
+    }, */
     basic_info: { type: Object, require: true },
     job_want: [jobwantSchema],
     work_exp: [workexpSchema],
