@@ -20,6 +20,10 @@ export const pickerCity = [
     {
         label: '杭州',
         value: '杭州'
+    },
+    {
+        label: '其他地区',
+        value: '其他地区'
     }
 ]
 export const pickerJob = [

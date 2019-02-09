@@ -6,6 +6,7 @@ import Test from './Test'
 import Login from './Login'
 import Register from './Register'
 import Home from './Home'
+import GeniusDetail from './Home/List/GeniusList/GeniusDetail'
 import BossInfo from './Userinfo/Boss'
 import GeniusInfo from './Userinfo/Genius'
 import MyResume from './Home/Mine/Myinfo/MyResume'
@@ -27,8 +28,6 @@ import JobPerformance from './Home/Mine/Myinfo/MyResume/AddWorkExp/JobPerformanc
 import ProjectContent from './Home/Mine/Myinfo/MyResume/AddProjectExp/ProjectContent'
 import ProjectPerformance from './Home/Mine/Myinfo/MyResume/AddProjectExp/ProjectPerformance'
 import SchoolExp from './Home/Mine/Myinfo/MyResume/AddEducationExp/SchoolExp'
-
-import Home2 from './Home2'
 
 export { 
     Test, 
@@ -58,5 +57,5 @@ export {
     JobManagement,
     AddJob,
     JobDetail,
-    Home2
+    GeniusDetail
 }

@@ -13,7 +13,6 @@ import Message from './Message'
 import Myinfo from './Mine/Myinfo'
 import MyinfoBoss from './Mine/MyInfoBoss'
 
-import Home2 from '../Home2'
 
 import emitter from '../../common/emitter'
 
@@ -148,7 +147,7 @@ class Home extends Component {
                                     }}
                                     data-seed="logId"
                                 >
-                                    <GeniusList state={this.props.state}></GeniusList>
+                                    <GeniusList props={this.props}></GeniusList>
                                     {/* <Home2></Home2> */}
                                 </TabBar.Item>
                         }

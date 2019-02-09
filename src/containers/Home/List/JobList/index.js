@@ -1,25 +1,31 @@
 import React, { Component } from 'react';
-import {NavBar,Grid} from 'antd-mobile'
+import {NavBar,Toast} from 'antd-mobile'
 
 class JobList extends Component {
     constructor(props){
         super(props)
         this.state = {
-            fuckingGrid: 0
+            axiosOk: false,
+            refreshing: true,
+            height: document.documentElement.clientHeight - 90,
+            width: document.documentElement.clientWidth,
+            jobs: [],
+            jobList: []
         }
     }
     componentDidMount(){
-        setTimeout(() => {
-            this.setState({
-                fuckingGrid: 1
-            })
-        }, 0);
+        
+    }
+    getJobList(){
+        
     }
     render() {
-        const data = Array.from(new Array(9)).map((_val, i) => ({ icon: 'https://gw.alipayobjects.com/zos/rmsportal/nywPmnTAvTmLusPxHPSu.png', text: `name${i}`, }));
         return (
             <div>
-                <Grid data={data} isCarousel onClick={_el => console.log(_el)} />
+                <NavBar
+                    style={{ position: 'fixed', top: '0', width: '100%', zIndex: '1' }}>
+                    Here is title
+                </NavBar>
             </div>
         );
     }
