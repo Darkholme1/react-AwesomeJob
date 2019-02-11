@@ -84,7 +84,8 @@ const resumes = mongoose.model('resumes', new mongoose.Schema({
     edu_exp: [eduexpSchema]
 }))
 const jobs = mongoose.model('jobs', new mongoose.Schema({
-    user_id: { type: String, require: true },
+    // user_id: { type: String, require: true },
+    user: { type: mongoose.Schema.Types.ObjectId, ref: 'users' },
     job_name: {type:String,require: true},
     salary: { type: Array, require: true },
     city: { type: Array, require: true },

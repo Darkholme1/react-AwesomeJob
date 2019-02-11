@@ -39,6 +39,8 @@ class App extends Component {
                     <Route path='/add_job' component={route.AddJob} />
                     <Route path='/job_detail' component={route.JobDetail} />
                     <Route path='/genius_detail' component={route.GeniusDetail} />
+                    <Route path='/job_show' component={route.JobShow} />
+                    <Route path='/chat/:user' component={route.Chat} />
                 </div>
             </Router>
         );

@@ -8,7 +8,7 @@ const Job = model.jobs
 Router.post('/add', function (req, res) {
     let job = JSON.parse(req.body.job)
     job = {
-        user_id: req.cookies.user_id,
+        user: req.cookies.user_id,
         ...job
     }
     Job.create(job, function (err, doc) {
@@ -51,7 +51,7 @@ Router.post('/delete', function (req, res) {
 //职位列表-当前BOSS
 Router.get('/list_mine', function (req, res) {
     Job.find({
-        user_id: req.cookies.user_id
+        user: req.cookies.user_id
     }, function (err, doc) {
         if (!err) {
             res.send({
@@ -64,6 +64,25 @@ Router.get('/list_mine', function (req, res) {
             })
         }
     })
+})
+//职位列表
+Router.get('/list', function (req, res) {
+    Job.find({})
+        .populate({
+            path: 'user',
+            select: 'company city nickname position avatar company_info'
+        }).exec(function (err, doc) {
+            if (!err) {
+                res.send({
+                    error: 0,
+                    doc: doc
+                })
+            } else {
+                res.send({
+                    error: 1
+                })
+            }
+        })
 })
 
 

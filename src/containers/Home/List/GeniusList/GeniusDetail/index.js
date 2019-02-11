@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Toast, NavBar, Icon } from 'antd-mobile'
+import { Toast, NavBar, Icon, Button } from 'antd-mobile'
 import ReactDOM from 'react-dom'
 
 import axios from '@/api/axios'
@@ -77,7 +77,10 @@ class GeniusDetail extends Component {
         })
     }
     scroll() {
-        this.state.navbarName.style.opacity = document.documentElement.scrollTop * 0.01
+        this.state.navbarName.style.opacity = document.body.scrollTop === 0 ? document.documentElement.scrollTop * 0.01 : document.body.scrollTop * 0.01
+    }
+    goChat() {
+        this.props.history.push(`/chat/${this.state.resume.user._id}`)
     }
     render() {
         return (
@@ -151,7 +154,7 @@ class GeniusDetail extends Component {
                                 </div>
                                 {
                                     this.state.resume.work_exp.length > 0 ?
-                                        this.state.resume.work_exp.map((item,index,arr) => {
+                                        this.state.resume.work_exp.map((item, index, arr) => {
                                             return (
                                                 <div key={index}>
                                                     <div style={style.containerJob}>
@@ -182,7 +185,7 @@ class GeniusDetail extends Component {
                                 </div>
                                 {
                                     this.state.resume.project_exp.length > 0 ?
-                                        this.state.resume.project_exp.map((item,index,arr) => {
+                                        this.state.resume.project_exp.map((item, index, arr) => {
                                             return (
                                                 <div key={index}>
                                                     <div style={style.containerJob}>
@@ -212,7 +215,7 @@ class GeniusDetail extends Component {
                                 </div>
                                 {
                                     this.state.resume.edu_exp.length > 0 ?
-                                        this.state.resume.edu_exp.map((item,index,arr) => {
+                                        this.state.resume.edu_exp.map((item, index, arr) => {
                                             return (
                                                 <div key={index}>
                                                     <div style={style.containerJob}>
@@ -237,6 +240,9 @@ class GeniusDetail extends Component {
                         </div>
                     ) : ''
                 }
+                <div style={style.btnBox}>
+                    <Button type="primary" style={style.button} onClick={() => { this.goChat() }}>立即沟通</Button>
+                </div>
             </div>
         );
     }

@@ -8,7 +8,8 @@ const style = {
     container: {
         background: 'white',
         padding: '0 20px',
-        marginTop: '45px'
+        marginTop: '45px',
+        marginBottom: 50
     },
     innerContainerBasic: {
         /* display: 'flex',
@@ -101,6 +102,20 @@ const style = {
         paddingTop: '20px',
         paddingBottom: '20px',
         borderBottom: '1px solid rgba(136,136,136,0.2)'
+    },
+    btnBox: {
+        position: 'fixed',
+        width: '100%',
+        height: 50,
+        bottom: 0,
+        background: 'rgba(255,255,255,0.8)',
+        padding: '5px 10px',
+        boxSizing: 'border-box'
+    },
+    button: {
+        height: 40,
+        fontSize: 16,
+        lineHeight: 2.5
     }
 }
 export default style

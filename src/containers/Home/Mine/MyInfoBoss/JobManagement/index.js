@@ -96,7 +96,8 @@ class JobManagement extends Component {
                                             <div style={style.NameAndMoney}>
                                                 <span style={style.jobName}>{current.job_name}</span>
                                                 <span style={style.jobMoney}>
-                                                    {`${current.salary[0]}k-${current.salary[1]}k`}
+                                                    {current.salary[0] === 0 ? '面议' :
+                                                        `${current.salary[0]}k-${current.salary[1]}k`}
                                                 </span>
                                             </div>
                                             <div style={style.tagContainer}>

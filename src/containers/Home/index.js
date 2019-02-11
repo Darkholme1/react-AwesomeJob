@@ -119,7 +119,7 @@ class Home extends Component {
                                     }}
                                     data-seed="logId"
                                 >
-                                    <JobList></JobList>
+                                    <JobList props={this.props}></JobList>
                                 </TabBar.Item> :
                                 <TabBar.Item
                                     title="牛人"

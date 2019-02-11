@@ -17,7 +17,10 @@ const User = mongoose.model('bs_users',new mongoose.Schema({
 
 
 const app = express();
+const server = require('http').Server(app)
+const io = require('socket.io')(server)
 const bodyParser = require('body-parser');
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser())
@@ -25,6 +28,13 @@ app.use('/user', userRouter)
 app.use('/resume', resumeRouter)
 app.use('/job', jobRouter)
 
+//socket
+io.on('connection', function (socket) {
+    socket.on('sendmsg', function (data) {
+        console.log(data)
+        io.emit('recvmsg', data)
+    })
+})
 
 //设置跨域访问
 app.all('*', function (req, res, next) {
@@ -60,9 +70,9 @@ app.post('/post_test', function (req, res) {
     console.log(response)
     res.json(response)
 })
-var server = app.listen(8081, function () {
-    var host = server.address().address
-    var port = server.address().port
+var sv = server.listen(8081, function () {
+    var host = sv.address().address
+    var port = sv.address().port
 
     console.log("应用实例，访问地址为 http://%s:%s", host, port)
 })
