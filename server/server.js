@@ -2,6 +2,7 @@ const express = require('express');
 const userRouter = require('./user')
 const resumeRouter = require('./resume')
 const jobRouter = require('./job')
+const chatRouter = require('./chat')
 const cookieParser = require('cookie-parser')
 
 /* mongoose.connect(DB_URL, {useNewUrlParser:true}, function(err){
@@ -27,15 +28,16 @@ app.use(cookieParser())
 app.use('/user', userRouter)
 app.use('/resume', resumeRouter)
 app.use('/job', jobRouter)
+app.use('/chat', chatRouter)
 
 //socket
 io.on('connection', function (socket) {
     socket.on('sendmsg', function (data) {
         console.log(data)
-        io.emit('recvmsg', data)
+        socket.emit('recvmsg', data)
+        // io.emit('recvmsg', data)
     })
 })
-
 //设置跨域访问
 app.all('*', function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");

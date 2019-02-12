@@ -3,6 +3,7 @@ const Router = express.Router()
 const model = require('./model')
 const User = model.users
 const Resume = model.resumes
+const Chat = model.chats
 // var mongoose = require('mongoose');
 // const md5 = require('js-md5')
 const _hide = { 'pwd': 0 }//不读取密码
@@ -170,6 +171,20 @@ Router.post('/company', function (req, res) {
                 )
             }
         })
+})
+//聊天信息
+Router.get('/msg_list', function (req, res) {
+    const user_id = req.cookies.user_id
+    Chat.find({}).exec(function (err, doc) {
+        if (!err) {
+            res.send({
+                error: 0,
+                doc: doc
+            })
+        } else {
+            res.send({ error: 1 })
+        }
+    })
 })
 
 module.exports = Router

@@ -86,7 +86,7 @@ const resumes = mongoose.model('resumes', new mongoose.Schema({
 const jobs = mongoose.model('jobs', new mongoose.Schema({
     // user_id: { type: String, require: true },
     user: { type: mongoose.Schema.Types.ObjectId, ref: 'users' },
-    job_name: {type:String,require: true},
+    job_name: { type: String, require: true },
     salary: { type: Array, require: true },
     city: { type: Array, require: true },
     address: { type: String, require: true },
@@ -94,14 +94,22 @@ const jobs = mongoose.model('jobs', new mongoose.Schema({
     education: { type: String, require: true },
     detail: { type: String, require: true }
 }))
-
+const chats = mongoose.model("chats", new mongoose.Schema({
+    chat_id: { type: String, require: true },
+    from: { type: mongoose.Schema.Types.ObjectId, ref: 'users', require: true },
+    to: { type: mongoose.Schema.Types.ObjectId, ref: 'users', require: true },
+    text: { type: String, require: true, default: '' },
+    create_time: { type: Number, default: new Date().getTime() },
+    read: { type: Boolean, default: false }
+}))
 
 
 
 module.exports = {
     users: users,
     resumes: resumes,
-    jobs: jobs
+    jobs: jobs,
+    chats: chats
     /* getModel: function (name) {
         return mongoose.model(name)
     } */

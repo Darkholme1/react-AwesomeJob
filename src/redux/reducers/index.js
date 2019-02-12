@@ -5,6 +5,7 @@ import userReducer from './user-reducer'
 import workexpReducer from './workexp-reducer'
 import projectexpReducer from './projectexp-reducer'
 import eduexpReducer from './eduexp-reducer'
+import chatReducer from './chat-reducer'
 
 const allReducers = {
   /* boys: boyReducer,
@@ -12,7 +13,8 @@ const allReducers = {
   user: userReducer,
   workExp: workexpReducer,
   projectExp: projectexpReducer,
-  eduExp: eduexpReducer
+  eduExp: eduexpReducer,
+  chat: chatReducer
 }
 
 const rootReducer = combineReducers(allReducers);
