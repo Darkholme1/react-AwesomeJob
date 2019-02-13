@@ -96,11 +96,13 @@ const jobs = mongoose.model('jobs', new mongoose.Schema({
 }))
 const chats = mongoose.model("chats", new mongoose.Schema({
     chat_id: { type: String, require: true },
-    from: { type: mongoose.Schema.Types.ObjectId, ref: 'users', require: true },
-    to: { type: mongoose.Schema.Types.ObjectId, ref: 'users', require: true },
+    /* from: { type: mongoose.Schema.Types.ObjectId, ref: 'users', require: true },
+    to: { type: mongoose.Schema.Types.ObjectId, ref: 'users', require: true }, */
+    from: { type: String, require: true },
+    to: { type: String, require: true },
     text: { type: String, require: true, default: '' },
-    create_time: { type: Number, default: new Date().getTime() },
-    read: { type: Boolean, default: false }
+    create_time: { type: Number, require: true },
+    un_read: { type: Number, default: 1 }
 }))
 
 

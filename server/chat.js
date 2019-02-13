@@ -10,7 +10,8 @@ Router.post('/add', function (req, res) {
         chat_id: req.body.chat_id,
         from: req.body.from,
         to: req.body.to,
-        text: req.body.text
+        text: req.body.text,
+        create_time: new Date().getTime()
     }
     Chat.create(data, function (err, doc) {
         if (!err) {
@@ -50,6 +51,39 @@ Router.get('/init', function (req, res) {
                 }
             }
         )
+    })
+})
+//聊天列表
+Router.get('/list', function (req, res) {
+    console.log(req.cookies.user_id)
+    Chat.aggregate([
+        { "$match": { "from": req.cookies.user_id } },
+        { "$sort": { "create_time": -1 } },
+        {
+            "$group": {
+                _id: "$chat_id",
+                "to": { "$first": "$to" },
+                "text": { "$first": "$text" },
+                "create_time": { "$first": "$create_time" },
+            }
+        },
+        {
+            "$lookup": {
+                "from": "users",
+                "localField": "from",
+                "foreignField": "_id",
+                "as": "from"
+            }
+        },
+    ], function (err, doc) {
+        if (!err) {
+            res.send({
+                error: 0,
+                doc: doc
+            })
+        } else {
+            res.send({ error: 1 })
+        }
     })
 })
 

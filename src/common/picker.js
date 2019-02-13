@@ -84,10 +84,6 @@ export const pickerJob = [
 ]
 export const pickerEduBg = [
     {
-        label: '无学历要求',
-        value: '无学历要求'
-    },
-    {
         label: '大专',
         value: '大专'
     },
@@ -102,6 +98,10 @@ export const pickerEduBg = [
     {
         label: '博士',
         value: '博士'
+    },
+    {
+        label: '其他',
+        value: '其他'
     }
 ]
 export const pickerFinancing = [

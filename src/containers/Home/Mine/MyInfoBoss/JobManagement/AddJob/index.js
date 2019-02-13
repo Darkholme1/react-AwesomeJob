@@ -42,10 +42,17 @@ class AddJob extends Component {
 
     }
     componentDidMount() {
+        setTimeout(() => {
+            if (!this.props.state.user.company_info) {
+                Toast.info('请先完善公司信息', 1.5, () => {
+                    this.props.history.goBack()
+                })
+            }
+        }, 0);
         if (this.props.state.user.company_info) {
             let address = this.props.state.user.company_info.address
             let pickerAddress = []
-            if (address.length > 0) {
+            if (address && address.length > 0) {
                 address.forEach(current => {
                     pickerAddress.push({
                         label: current,

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import io from 'socket.io-client'
+
 import { List, InputItem, Toast, NavBar, Icon } from 'antd-mobile'
 
 import { connect } from 'react-redux'
@@ -7,9 +7,16 @@ import { msgList } from '@/redux/actions/chat-action'
 
 import style from './style'
 import axios from '@/api/axios'
+import socket from '@/api/socket'
 
-const socket = io('ws://127.0.0.1:8081')
 
+/* let socket
+axios.get('/ip')
+    .then(res => {
+        socket = io(`ws://${res.data}:8081`)
+    }).catch(err => {
+        console.log(err)
+    }) */
 class Chat extends Component {
     constructor(props) {
         super(props)
@@ -25,10 +32,14 @@ class Chat extends Component {
             myInfo: {
 
             },
-            axiosOk: false
+            axiosOk: false,
         }
     }
+    componentWillMount() {
+
+    }
     componentDidMount() {
+
         Toast.loading('Loading...', 10, () => {
             Toast.info('网络超时', 1.5)
         });
@@ -76,8 +87,6 @@ class Chat extends Component {
                             Toast.hide()
                             this.scroll()
                         })
-
-                        console.log(this.state.toInfo, this.state.msg)
                     }
                 }).catch(err => {
                     Toast.info('未知错误', 1.5)
@@ -101,7 +110,7 @@ class Chat extends Component {
                 to: this.state.to,
                 text: this.state.text
             })
-            Toast.info('socket send')
+            // Toast.info('socket send')
             resolve()
         }).then(() => {
             // console.log(_this)

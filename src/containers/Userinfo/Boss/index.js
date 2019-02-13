@@ -7,6 +7,7 @@ import {regNickname,regCompany} from '../../../common/reg'
 import formvalidate from '../../../common/formvalidate'
 import { connect } from 'react-redux'
 import { addUser } from '../../../redux/actions/user-action'
+import {pickerCity} from '@/common/picker'
 // import * as datatype from '../../../common/datatype'
 const datatype = require('../../../common/datatype')
 const avatarData = Array.from(new Array(15)).map((_val, i) => ({
@@ -121,28 +122,6 @@ class BossInfo extends Component {
     }
     render() {
         const { getFieldProps } = this.props.form;
-        const city = [
-            {
-                label: '北京',
-                value: '北京'
-            },
-            {
-                label: '上海',
-                value: '上海'
-            },
-            {
-                label: '广州',
-                value: '广州'
-            },
-            {
-                label: '深圳',
-                value: '深圳'
-            },
-            {
-                label: '杭州',
-                value: '杭州'
-            }
-        ]
         return (
             <div>
                 <NavBar
@@ -175,7 +154,7 @@ class BossInfo extends Component {
 
                 </List>
                 <List>
-                    <Picker data={city} cols={1} {...getFieldProps('city', { initialValue: this.state.city })}>
+                    <Picker data={pickerCity} cols={1} {...getFieldProps('city', { initialValue: this.state.city })}>
                         <List.Item arrow="horizontal">所在地区</List.Item>
                     </Picker>
 

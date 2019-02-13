@@ -42,7 +42,6 @@ class Myinfo extends Component {
     }
     componentDidMount() {
         const Myinfo = ReactDOM.findDOMNode(this.refs.Myinfo)
-        console.log(Myinfo)
         Myinfo.addEventListener('scroll', () => {
             this.setState({
                 dynamicStyle: {

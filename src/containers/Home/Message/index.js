@@ -1,20 +1,27 @@
 import React, { Component } from 'react';
-import { NavBar } from 'antd-mobile'
+import { NavBar, Toast } from 'antd-mobile'
 
 import { connect } from 'react-redux'
-import { msgList } from '@/redux/actions/chat-action'
+// import { msgList } from '@/redux/actions/chat-action'
 
 import axios from '@/api/axios'
 
 class Message extends Component {
-    constructor(props){
+    constructor(props) {
         super(props)
-        this.state={
+        this.state = {
 
         }
     }
     componentDidMount() {
-        
+        axios.get('/chat/list')
+            .then(res => {
+                if (res.status === 200 && res.data.error === 0) {
+                    console.log('gourp:',res.data.doc)
+                }
+            }).catch(err => {
+                Toast.info('未知错误',1.5)
+            })
     }
     render() {
         return (
@@ -28,7 +35,7 @@ class Message extends Component {
 const mapStateProps = state => {
     return { state }
 }
-const actionCreator = { msgList }
+const actionCreator = {}
 Message = connect(mapStateProps, actionCreator)(Message)
 
 export default Message;

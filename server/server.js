@@ -34,8 +34,8 @@ app.use('/chat', chatRouter)
 io.on('connection', function (socket) {
     socket.on('sendmsg', function (data) {
         console.log(data)
-        socket.emit('recvmsg', data)
-        // io.emit('recvmsg', data)
+        // socket.emit('recvmsg', data)
+        io.emit('recvmsg', data)
     })
 })
 //设置跨域访问
@@ -72,10 +72,29 @@ app.post('/post_test', function (req, res) {
     console.log(response)
     res.json(response)
 })
+app.get('/ip', function (req, res) {
+    var os = require('os'),
+        iptable = {},
+        ifaces = os.networkInterfaces();
+    for (var dev in ifaces) {
+        ifaces[dev].forEach(function (details, alias) {
+            if (details.family == 'IPv4') {
+                iptable[dev + (alias ? ':' + alias : '')] = details.address;
+            }
+        });
+    }
+    let ip
+    for(let m in iptable){
+        if(m=='WLAN:1'){
+            ip=iptable[m]
+            break
+        }
+    }
+    res.send(ip)
+})
 var sv = server.listen(8081, function () {
     var host = sv.address().address
     var port = sv.address().port
-
     console.log("应用实例，访问地址为 http://%s:%s", host, port)
 })
 // app.listen(8081)
