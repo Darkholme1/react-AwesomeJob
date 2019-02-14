@@ -1,8 +1,8 @@
-export const MSG_LIST = "MSG_LIST"
+export const UPDATE_COUNT = "UPDATE_COUNT"
 
-export const msgList = msgs => {
+export const updateCount = num => {
     return {
-        type: MSG_LIST,
-        payload: msgs
+        type: UPDATE_COUNT,
+        payload: num
     }
 }

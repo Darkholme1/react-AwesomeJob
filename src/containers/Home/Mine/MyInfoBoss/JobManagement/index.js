@@ -51,7 +51,7 @@ class JobManagement extends Component {
         return (
             <div>
                 <NavBar icon={<Icon type="left" />}
-                    onLeftClick={() => { this.props.history.push({ pathname: '/', query: { tab: 2 } }) }}
+                    onLeftClick={() => { this.props.history.goBack() }}
                     style={{ position: 'fixed', width: '100%', top: '0', zIndex: '2' }}
                 >
                     职位管理

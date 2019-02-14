@@ -1,9 +1,9 @@
-import { UPDATE_COUNT } from '../actions/chat-action'
+import { CHANGE_TAB } from '../actions/tab-action'
 
 const init = 0
 export default function reducer(state = init, action) {
     switch (action.type) {
-        case UPDATE_COUNT:
+        case CHANGE_TAB:
             return action.payload
         default:
             return state

@@ -33,7 +33,7 @@ app.use('/chat', chatRouter)
 //socket
 io.on('connection', function (socket) {
     socket.on('sendmsg', function (data) {
-        console.log(data)
+        // console.log(data)
         // socket.emit('recvmsg', data)
         io.emit('recvmsg', data)
     })

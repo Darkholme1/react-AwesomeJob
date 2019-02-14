@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import axios from '../../api/axios'
 import AuthRoute from '../../components/AuthRoute'
 import { deleteUser } from '../../redux/actions/user-action'
+import { changeTab } from '../../redux/actions/tab-action'
 import { Link } from 'react-router-dom'
 import { TabBar, Modal, Toast } from 'antd-mobile'
 import JobList from './List/JobList'
@@ -21,16 +22,11 @@ class Home extends Component {
         super(props)
         this.state = {
             hidden: false,
-            selectedTab: 0
+            // selectedTab: 0
         }
     }
     componentDidMount() {
         emitter.addListener('logout', this.logout)
-        if (this.props.location.query) {
-            this.setState({
-                selectedTab: this.props.location.query.tab
-            })
-        }
     }
     componentWillUnmount() {
         emitter.removeListener('logout', this.logout)
@@ -110,12 +106,10 @@ class Home extends Component {
                                     }}
                                     />
                                     }
-                                    selected={this.state.selectedTab === 0}
+                                    selected={this.props.state.tab === 0}
                                     // badge={1}
                                     onPress={() => {
-                                        this.setState({
-                                            selectedTab: 0,
-                                        });
+                                        this.props.changeTab(0)
                                     }}
                                     data-seed="logId"
                                 >
@@ -138,12 +132,10 @@ class Home extends Component {
                                     }}
                                     />
                                     }
-                                    selected={this.state.selectedTab === 0}
+                                    selected={this.props.state.tab === 0}
                                     // badge={1}
                                     onPress={() => {
-                                        this.setState({
-                                            selectedTab: 0,
-                                        });
+                                        this.props.changeTab(0)
                                     }}
                                     data-seed="logId"
                                 >
@@ -170,12 +162,10 @@ class Home extends Component {
                             }
                             title="消息"
                             key="message"
-                            // badge={'new'}
-                            selected={this.state.selectedTab === 1}
+                            badge={this.props.state.chat === 0 ? '' : this.props.state.chat + ''}
+                            selected={this.props.state.tab === 1}
                             onPress={() => {
-                                this.setState({
-                                    selectedTab: 1,
-                                });
+                                this.props.changeTab(1)
                             }}
                             data-seed="logId1"
                         >
@@ -202,11 +192,9 @@ class Home extends Component {
                             title="我的"
                             key="my"
                             // dot
-                            selected={this.state.selectedTab === 2}
+                            selected={this.props.state.tab === 2}
                             onPress={() => {
-                                this.setState({
-                                    selectedTab: 2,
-                                });
+                                this.props.changeTab(2)
                             }}
 
                         >
@@ -227,6 +215,6 @@ class Home extends Component {
 const mapStateProps = (state) => {
     return { state }
 }
-const actionCreators = { deleteUser }
+const actionCreators = { deleteUser,changeTab }
 Home = connect(mapStateProps, actionCreators)(Home)
 export default Home;

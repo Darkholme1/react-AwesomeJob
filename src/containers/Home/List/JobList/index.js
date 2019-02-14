@@ -27,7 +27,7 @@ class JobList extends Component {
             this.setState({
                 jobList: res.data.doc
             }, () => {
-                console.log(this.state.jobList)
+                // console.log(this.state.jobList)
             })
             Toast.hide()
         }).catch(err => {

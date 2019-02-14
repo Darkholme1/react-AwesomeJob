@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { List, InputItem, Toast, NavBar, Icon } from 'antd-mobile'
 
 import { connect } from 'react-redux'
-import { msgList } from '@/redux/actions/chat-action'
+import { updateCount } from '@/redux/actions/chat-action'
 
 import style from './style'
 import axios from '@/api/axios'
@@ -56,10 +56,18 @@ class Chat extends Component {
                         }
                     ]
                 }, () => {
+                    axios.post('/chat/read',{
+                        chat_id: this.state.chat_id,
+                    }).then(res=>{
+    
+                    }).catch(err=>{
+                        // Toast.info('未知错误')
+                    })
                     this.scroll()
                 })
             }
         })
+        //计时器防刷新获取不到当前用户
         setTimeout(() => {
             this.setState({
                 from: this.props.state.user._id,
@@ -72,6 +80,7 @@ class Chat extends Component {
                         avatar: this.props.state.user.avatar
                     }
                 })
+                //获取聊天历史
                 axios.get('/chat/init', {
                     params: {
                         to: this.state.to,
@@ -90,6 +99,14 @@ class Chat extends Component {
                     }
                 }).catch(err => {
                     Toast.info('未知错误', 1.5)
+                })
+                //清除未读状态
+                axios.post('/chat/read',{
+                    chat_id: this.state.chat_id,
+                }).then(res=>{
+
+                }).catch(err=>{
+                    // Toast.info('未知错误')
                 })
             })
         }, 100);
@@ -203,7 +220,7 @@ class Chat extends Component {
 const mapStateProps = state => {
     return { state }
 }
-const actionCreator = { msgList }
+const actionCreator = { updateCount }
 Chat = connect(mapStateProps, actionCreator)(Chat)
 
 export default Chat;

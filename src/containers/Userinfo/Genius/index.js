@@ -129,7 +129,7 @@ class GeniusInfo extends Component {
                 <NavBar icon={this.state.isNamed === 1 ? <Icon type="left" /> : ''}
                     onLeftClick={() => {
                         return this.state.isNamed === 1 ?
-                            this.props.history.push({ pathname: '/', query: { tab: 2 } }) : ''
+                            this.props.history.goBack() : ''
                     }}>
                     {(() => {
                         return this.state.isNamed === 1 ? '编辑资料' : '牛人信息完善'
