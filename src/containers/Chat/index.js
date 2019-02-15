@@ -33,10 +33,8 @@ class Chat extends Component {
 
             },
             axiosOk: false,
+            btnResume: false
         }
-    }
-    componentWillMount() {
-
     }
     componentDidMount() {
 
@@ -56,11 +54,11 @@ class Chat extends Component {
                         }
                     ]
                 }, () => {
-                    axios.post('/chat/read',{
+                    axios.post('/chat/read', {
                         chat_id: this.state.chat_id,
-                    }).then(res=>{
-    
-                    }).catch(err=>{
+                    }).then(res => {
+
+                    }).catch(err => {
                         // Toast.info('未知错误')
                     })
                     this.scroll()
@@ -101,11 +99,11 @@ class Chat extends Component {
                     Toast.info('未知错误', 1.5)
                 })
                 //清除未读状态
-                axios.post('/chat/read',{
+                axios.post('/chat/read', {
                     chat_id: this.state.chat_id,
-                }).then(res=>{
+                }).then(res => {
 
-                }).catch(err=>{
+                }).catch(err => {
                     // Toast.info('未知错误')
                 })
             })
@@ -150,6 +148,34 @@ class Chat extends Component {
 
         })
     }
+    sendResume() {
+        // console.log('sender:', this.props.state.user._id)
+        new Promise((resolve, reject) => {
+            socket.emit('sendmsg', {
+                chat_id: this.state.chat_id,
+                from: this.state.from,
+                to: this.state.to,
+                text: '[投递简历]'
+            })
+            // Toast.info('socket send')
+            resolve()
+        }).then(() => {
+            // console.log(_this)
+            axios.post('/chat/add', {
+                chat_id: this.state.chat_id,
+                from: this.state.from,
+                to: this.state.to,
+                text: '[投递简历]'
+            }).then(res => {
+                if (res.status === 200 && res.data.error === 0) {
+                    this.scroll()
+                }
+            }).catch(err => {
+                Toast.info('未知错误', 1.5)
+            })
+
+        })
+    }
     render() {
         return (
             <div>
@@ -178,18 +204,43 @@ class Chat extends Component {
                                             item.from === this.state.from ?
                                                 (
                                                     <div style={style.msgMine}>
-                                                        <span>{item.text}</span>
+                                                        {/* <span>{item.text}</span> */}
+                                                        <div style={{ maxWidth: '60%' }}>
+                                                            <div style={{ height: 10 }}></div>
+                                                            <div style={style.msgCard}>
+                                                                {item.text==='[投递简历]'?
+                                                                (
+                                                                    <div>
+                                                                        <img 
+                                                                        style={{
+                                                                            width:15,
+                                                                            height:15,
+                                                                            marginRight:3,
+                                                                            position: 'relative',
+                                                                            top: 2
+                                                                            }} src={require('@/resource/image/icon/resume.png')} />
+                                                                    点击查看简历
+                                                                    </div>
+                                                                ):
+                                                                item.text}
+                                                            </div>
+                                                        </div>
                                                         <img
-                                                            style={style.avatar}
+                                                            style={{ ...style.avatar, marginLeft: 10 }}
                                                             src={require(`@/resource/image/avatar/av${this.state.myInfo.avatar}.jpg`)} />
 
                                                     </div>
                                                 ) : (
                                                     <div style={style.msgHis}>
                                                         <img
-                                                            style={style.avatar}
+                                                            style={{ ...style.avatar, marginRight: 10 }}
                                                             src={require(`@/resource/image/avatar/av${this.state.toInfo.avatar}.jpg`)} />
-                                                        <span>{item.text}</span>
+                                                        <div style={{ maxWidth: '60%' }}>
+                                                            <div style={{ height: 10 }}></div>
+                                                            <div style={style.msgCard}>
+                                                                {item.text}
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 )
                                         }
@@ -197,6 +248,48 @@ class Chat extends Component {
                                 )
                             }) : ''
                     }
+                </div>
+                <div style={style.sendResumeBox}>
+                    <div
+                        style={
+                            this.state.btnResume === false ?
+                                {
+                                    ...style.btnResume,
+                                    opacity: 0
+                                } :
+                                {
+                                    ...style.btnResume,
+                                    opacity: 1,
+                                    marginRight: 5
+                                }
+                        }
+                        onClick={() => {
+                            if(this.state.btnResume){
+                                this.sendResume()
+                            }
+                        }}>发送简历</div>
+                    <div
+                        onClick={() => {
+
+                            this.setState({
+                                btnResume: this.state.btnResume === true ? false : true
+                            })
+                        }}
+                        style={{
+                            width: 30,
+                            height: 30,
+                            borderRadius: '50%',
+                            background: 'white',
+                            opacity: this.state.btnResume ? '1' : '0.5',
+                            transition: '0.5s'
+                        }}>
+                        <img
+                            style={{
+                                width: 30,
+                                height: 30
+                            }}
+                            src={require('@/resource/image/icon/send_resume.png')} />
+                    </div>
                 </div>
                 <List style={style.input}>
                     <InputItem

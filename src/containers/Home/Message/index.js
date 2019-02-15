@@ -135,18 +135,14 @@ class Message extends Component {
                                         var hour = ms / 1000 / 60 / 60
                                         let time
                                         let createTime = new Date(item.create_time)
-                                        if (hour < 24) {
+                                        var day = createTime.getDate()
+                                        var dayToady = new Date().getDate()
+                                        if (hour < 24 && day === dayToady) {
                                             var clockHour = createTime.getHours() < 10 ? '0' + createTime.getHours() : createTime.getHours()
                                             var clockMin = createTime.getMinutes() < 10 ? '0' + createTime.getMinutes() : createTime.getMinutes()
                                             time = clockHour + ':' + clockMin
                                         } else {
-                                            if (hour / 24 >= 1 && hour / 24 < 2) {
-                                                time = "昨天"
-                                            } else if (hour / 24 >= 2 && hour / 24 < 3) {
-                                                time = "前天"
-                                            } else {
-                                                time = createTime.getMonth() + 1 + '-' + createTime.getDate()
-                                            }
+                                            time = createTime.getMonth() + 1 + '-' + createTime.getDate()
                                         }
                                         item.time = time
                                     })
@@ -213,12 +209,12 @@ class Message extends Component {
                     }}
                 >消息</NavBar>
                 <div style={{
-                        height: this.state.height,
-                        width: this.state.width,
-                        overflow: 'auto',
-                        position: 'absolute',
-                        top: '45px',
-                    }}>
+                    height: this.state.height,
+                    width: this.state.width,
+                    overflow: 'auto',
+                    position: 'absolute',
+                    top: '45px',
+                }}>
                     <List>
                         {
                             this.state.axiosOk ?
