@@ -84,6 +84,44 @@ Router.get('/list', function (req, res) {
             }
         })
 })
+//根据boss查询其发布的职位
+Router.get('/list_boss', function (req, res) {
+    Job.find({ user: req.query.user_id })
+        .populate({
+            path: 'user',
+            select: 'company city nickname position avatar company_info'
+        }).exec(function (err, doc) {
+            if (!err) {
+                res.send({
+                    error: 0,
+                    doc: doc
+                })
+            } else {
+                res.send({
+                    error: 1
+                })
+            }
+        })
+})
+//查询职位详情
+Router.get('/job_detail', function (req, res) {
+    Job.findOne({ _id: req.query.id })
+        .populate({
+            path: 'user',
+            select: 'company city nickname position avatar company_info'
+        }).exec(function (err, doc) {
+            if (!err) {
+                res.send({
+                    error: 0,
+                    doc: doc
+                })
+            } else {
+                res.send({
+                    error: 1
+                })
+            }
+        })
+})
 
 
 module.exports = Router

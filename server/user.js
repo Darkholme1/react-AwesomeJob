@@ -26,6 +26,19 @@ Router.get('/query', function (req, res) {
         res.send(doc)
     })
 })
+//根据id查询用户
+Router.get('/query_id', function (req, res) {
+    User.findOne({ _id: req.query.user_id }, _hide).exec(function (err, doc) {
+        if (!err) {
+            res.send({
+                error: 0,
+                doc: doc
+            })
+        } else {
+            res.send({ error: 1 })
+        }
+    })
+})
 //用户cookie校验
 Router.get('/cookie', function (req, res) {
     if (!req.cookies.user_id) {
@@ -171,20 +184,6 @@ Router.post('/company', function (req, res) {
                 )
             }
         })
-})
-//聊天信息
-Router.get('/msg_list', function (req, res) {
-    const user_id = req.cookies.user_id
-    Chat.find({}).exec(function (err, doc) {
-        if (!err) {
-            res.send({
-                error: 0,
-                doc: doc
-            })
-        } else {
-            res.send({ error: 1 })
-        }
-    })
 })
 
 module.exports = Router

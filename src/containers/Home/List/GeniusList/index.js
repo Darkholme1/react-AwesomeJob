@@ -98,8 +98,8 @@ class GeniusList extends Component {
                             }
                         }
                         onClick={() => {
-                            sessionStorage.geniusId = obj._id
-                            this.props.history.push('/genius_detail')
+                            // sessionStorage.geniusId = obj._id
+                            this.props.history.push('/genius_detail/'+obj._id)
                         }}
                     >
                         <div style={{ height: '50px', lineHeight: '50px', color: '#888', fontSize: '18px', borderBottom: '1px solid rgba(136,136,136,0.2)' }}>

@@ -34,7 +34,7 @@ class Message extends Component {
             .then(res => {
                 if (res.status === 200 && res.data.error === 0) {
                     // console.log(res.data.doc)
-                    let data = res.data.doc //所聊天记录在后端根据chat_id(即聊天对象)排序过
+                    let data = res.data.doc //聊天记录在后端根据chat_id(即聊天对象)排序过
                     let chatId = ''
                     let msgOne = [] //存放单个聊天对象的记录
                     let msgAll = [] //存放所有聊天对象的记录

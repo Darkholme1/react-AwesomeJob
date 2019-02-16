@@ -26,18 +26,16 @@ class JobList extends Component {
         axios.get('/job/list').then(res => {
             this.setState({
                 jobList: res.data.doc
-            }, () => {
-                // console.log(this.state.jobList)
             })
             Toast.hide()
         }).catch(err => {
             Toast.info('未知错误', 1.5)
         })
     }
-    routerPush(index){
+    /* routerPush(index) {
         sessionStorage.jobShow = JSON.stringify(this.state.jobList[index])
         this.props.history.push('/job_show')
-    }
+    } */
     render() {
         const row = (item, index) => {
             return (
@@ -57,7 +55,8 @@ class JobList extends Component {
                         }
                     }
                     onClick={() => {
-                        this.routerPush(index)
+                        // this.routerPush(index)
+                        this.props.history.push('/job_show/' + item._id)
                     }}>
                     <div style={style.NameAndMoney}>
                         <span style={style.jobName}>{item.job_name}</span>
@@ -79,7 +78,7 @@ class JobList extends Component {
                             style={{ height: 25, width: 25, marginRight: 10, borderRadius: '50%' }}
                             src={require(`@/resource/image/avatar/av${item.user.avatar}.jpg`)}
                             alt="BOSS" />
-                            <span>{item.user.nickname} · {item.user.position}</span>
+                        <span>{item.user.nickname} · {item.user.position}</span>
                     </div>
                 </div>
             )

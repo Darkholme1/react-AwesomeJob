@@ -12,15 +12,28 @@ class GeniusDetail extends Component {
             axiosOk: false,
             resume: '',
             age_work: '',
-            navbarName: null
+            navbarName: null,
+            btnChat: true,
+            btnCollect: true
         }
     }
     componentWillMount() {
-        if (sessionStorage.getItem('geniusId')) {
+        if(JSON.parse(sessionStorage.getItem('btnChat'))===false){
+            this.setState({
+                btnChat: false
+            })
+        }
+        if(JSON.parse(sessionStorage.getItem('btnCollect'))===false){
+            this.setState({
+                btnCollect: false
+            })
+        }
+        console.log(this.props.match.params.user)
+        if (this.props.match.params.user) {
             // console.log(sessionStorage.getItem('geniusId'))
             axios.get('/resume/query_id', {
                 params: {
-                    _id: sessionStorage.getItem('geniusId')
+                    _id: this.props.match.params.user
                 }
             }).then(res => {
                 if (res.data.error === 0) {
@@ -47,6 +60,7 @@ class GeniusDetail extends Component {
 
                         })
                     })
+                    console.log(this.state.resume)
                 } else {
                     Toast.info('未知错误', 1.5)
                 }
@@ -75,6 +89,8 @@ class GeniusDetail extends Component {
         document.removeEventListener('scroll', () => {
             this.scroll()
         })
+        sessionStorage.removeItem('btnChat')
+        sessionStorage.removeItem('btnCollect')
     }
     scroll() {
         this.state.navbarName.style.opacity = document.body.scrollTop === 0 ? document.documentElement.scrollTop * 0.01 : document.body.scrollTop * 0.01
@@ -91,10 +107,10 @@ class GeniusDetail extends Component {
                     style={style.navbar}
                     icon={<Icon type="left" />}
                     onLeftClick={() => { this.props.history.goBack() }}
-                    rightContent={[
-                        <Icon key="0" type="search" style={{ marginRight: '16px' }} />,
-                        <Icon key="1" type="ellipsis" />,
-                    ]}>
+                    rightContent={
+                        this.state.btnCollect?
+                        <Icon key="1" type="ellipsis" />:''
+                    }>
                     <span ref="navbar_name" style={{ opacity: 0 }}>{this.state.axiosOk ? this.state.resume.user.nickname : ''}</span>
                 </NavBar>
                 {
@@ -240,9 +256,14 @@ class GeniusDetail extends Component {
                         </div>
                     ) : ''
                 }
-                <div style={style.btnBox}>
-                    <Button type="primary" style={style.button} onClick={() => { this.goChat() }}>立即沟通</Button>
-                </div>
+                {
+                    this.state.btnChat ?
+                        (
+                            <div style={style.btnBox}>
+                                <Button type="primary" style={style.button} onClick={() => { this.goChat() }}>立即沟通</Button>
+                            </div>
+                        ) : ''
+                }
             </div>
         );
     }

@@ -41,7 +41,7 @@ class MyResume extends Component {
             sessionStorage.removeItem('isEdit')
         }
         axios.get('/resume/query').then((res) => {
-            console.log(res.data)
+            // console.log(res.data)
             this.setState({
                 resume: res.data,
                 axiosOk: 1
@@ -104,6 +104,20 @@ class MyResume extends Component {
             Toast.hide()
         }
     }
+    watchResume() {
+        sessionStorage.btnChat = false
+        sessionStorage.btnCollect = false
+        axios.get('/resume/resume_id', {
+            params: {
+                user_id: this.props.state.user._id
+            }
+        }).then(res => {
+            // console.log(res)
+            this.props.history.push('/genius_detail/' + res.data._id)
+        }).catch(err => {
+
+        })
+    }
     render() {
         const prompt = Modal.prompt
         return (
@@ -112,7 +126,7 @@ class MyResume extends Component {
                 <NavBar icon={<Icon type="left" />}
                     onLeftClick={() => { this.props.history.goBack() }}
                     style={{ position: 'fixed', width: '100%', top: '0', zIndex: '1' }}
-                    rightContent={<span onClick={() => { }}>预览</span>}
+                    rightContent={<span onClick={() => { this.watchResume() }}>预览</span>}
                 >
                     我的简历
                 </NavBar>

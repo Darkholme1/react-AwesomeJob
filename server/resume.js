@@ -10,6 +10,16 @@ Router.get('/query', function (req, res) {
         res.send(doc)
     })
 })
+//根据用户id查询简历id
+Router.get('/resume_id',function(req,res){
+    Resume.findOne(
+        {user:req.query.user_id},
+        '_id',
+        function(err,doc){
+            res.send(doc)
+        }
+    )
+})
 //简历-更新个人信息
 Router.post('/basicinfo', function (req, res) {
     /* resume: {

@@ -144,7 +144,7 @@ Router.post('/read', function (req, res) {
 //获取聊天列表的用户头像和姓名
 Router.get('/list_user', function (req, res) {
     let arr_user = JSON.parse(req.query.arr_user)
-    console.log(arr_user)
+    // console.log(arr_user)
     User.find({
         _id: {
             $in: arr_user

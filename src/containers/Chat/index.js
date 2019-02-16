@@ -37,7 +37,7 @@ class Chat extends Component {
         }
     }
     componentDidMount() {
-
+        // console.log(this.state.to)
         Toast.loading('Loading...', 10, () => {
             Toast.info('网络超时', 1.5)
         });
@@ -177,6 +177,39 @@ class Chat extends Component {
         })
     }
     render() {
+        const resumeClick = (isMine, id) => {
+            return (
+                <div onClick={() => {
+                    if (isMine) {
+                        sessionStorage.btnChat = false
+                        sessionStorage.btnCollect = false
+                    } else {
+                        sessionStorage.btnChat = false
+                    }
+                    axios.get('/resume/resume_id', {
+                        params: {
+                            user_id: id
+                        }
+                    }).then(res => {
+                        // console.log(res)
+                        this.props.history.push('/genius_detail/' + res.data._id)
+                    }).catch(err => {
+
+                    })
+
+                }}>
+                    <img
+                        style={{
+                            width: 15,
+                            height: 15,
+                            marginRight: 3,
+                            position: 'relative',
+                            top: 2
+                        }} src={require('@/resource/image/icon/resume.png')} />
+                    点击查看简历
+                                                                        </div>
+            )
+        }
         return (
             <div>
                 <NavBar
@@ -208,21 +241,9 @@ class Chat extends Component {
                                                         <div style={{ maxWidth: '60%' }}>
                                                             <div style={{ height: 10 }}></div>
                                                             <div style={style.msgCard}>
-                                                                {item.text==='[投递简历]'?
-                                                                (
-                                                                    <div>
-                                                                        <img 
-                                                                        style={{
-                                                                            width:15,
-                                                                            height:15,
-                                                                            marginRight:3,
-                                                                            position: 'relative',
-                                                                            top: 2
-                                                                            }} src={require('@/resource/image/icon/resume.png')} />
-                                                                    点击查看简历
-                                                                    </div>
-                                                                ):
-                                                                item.text}
+                                                                {item.text === '[投递简历]' ?
+                                                                    resumeClick(true, item.from) :
+                                                                    item.text}
                                                             </div>
                                                         </div>
                                                         <img
@@ -238,7 +259,9 @@ class Chat extends Component {
                                                         <div style={{ maxWidth: '60%' }}>
                                                             <div style={{ height: 10 }}></div>
                                                             <div style={style.msgCard}>
-                                                                {item.text}
+                                                                {item.text === '[投递简历]' ?
+                                                                    resumeClick(false, item.from) :
+                                                                    item.text}
                                                             </div>
                                                         </div>
                                                     </div>
@@ -249,48 +272,51 @@ class Chat extends Component {
                             }) : ''
                     }
                 </div>
-                <div style={style.sendResumeBox}>
-                    <div
-                        style={
-                            this.state.btnResume === false ?
-                                {
-                                    ...style.btnResume,
-                                    opacity: 0
-                                } :
-                                {
-                                    ...style.btnResume,
-                                    opacity: 1,
-                                    marginRight: 5
+                {
+                    this.props.state.user.type == 0 ?
+                        <div style={style.sendResumeBox}>
+                            <div
+                                style={
+                                    this.state.btnResume === false ?
+                                        {
+                                            ...style.btnResume,
+                                            opacity: 0
+                                        } :
+                                        {
+                                            ...style.btnResume,
+                                            opacity: 1,
+                                            marginRight: 5
+                                        }
                                 }
-                        }
-                        onClick={() => {
-                            if(this.state.btnResume){
-                                this.sendResume()
-                            }
-                        }}>发送简历</div>
-                    <div
-                        onClick={() => {
+                                onClick={() => {
+                                    if (this.state.btnResume) {
+                                        this.sendResume()
+                                    }
+                                }}>发送简历</div>
+                            <div
+                                onClick={() => {
 
-                            this.setState({
-                                btnResume: this.state.btnResume === true ? false : true
-                            })
-                        }}
-                        style={{
-                            width: 30,
-                            height: 30,
-                            borderRadius: '50%',
-                            background: 'white',
-                            opacity: this.state.btnResume ? '1' : '0.5',
-                            transition: '0.5s'
-                        }}>
-                        <img
-                            style={{
-                                width: 30,
-                                height: 30
-                            }}
-                            src={require('@/resource/image/icon/send_resume.png')} />
-                    </div>
-                </div>
+                                    this.setState({
+                                        btnResume: this.state.btnResume === true ? false : true
+                                    })
+                                }}
+                                style={{
+                                    width: 30,
+                                    height: 30,
+                                    borderRadius: '50%',
+                                    background: 'white',
+                                    opacity: this.state.btnResume ? '1' : '0.5',
+                                    transition: '0.5s'
+                                }}>
+                                <img
+                                    style={{
+                                        width: 30,
+                                        height: 30
+                                    }}
+                                    src={require('@/resource/image/icon/send_resume.png')} />
+                            </div>
+                        </div> : ''
+                }
                 <List style={style.input}>
                     <InputItem
                         value={this.state.text}
