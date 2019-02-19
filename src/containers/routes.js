@@ -9,6 +9,7 @@ import Home from './Home'
 import GeniusDetail from './Home/List/GeniusList/GeniusDetail'
 import JobShow from './Home/List/JobList/JobShow'
 import BossDetail from './Home/List/JobList/JobShow/BossDetail'
+import CompanyDetail from './Home/List/JobList/JobShow/CompanyDetail'
 import BossInfo from './Userinfo/Boss'
 import GeniusInfo from './Userinfo/Genius'
 import MyResume from './Home/Mine/Myinfo/MyResume'
@@ -63,5 +64,6 @@ export {
     GeniusDetail,
     JobShow,
     Chat,
-    BossDetail
+    BossDetail,
+    CompanyDetail
 }

@@ -24,12 +24,15 @@ class BossDetail extends Component {
                 this.setState({
                     axiosOk: true
                 })
-
+                Toast.hide()
             }).catch((err) => {
                 Toast.info('未知错误', 1.5)
             })
     }
     componentDidMount() {
+        Toast.loading('Loading...', 10, () => {
+            Toast.info('网络超时', 1.5)
+        });
         document.addEventListener('scroll', () => {
             this.scroll()
         })
@@ -83,7 +86,7 @@ class BossDetail extends Component {
                     this.setState({
                         jobList: res.data.doc
                     }, () => {
-                        console.log(this.state.jobList)
+                        // console.log(this.state.jobList)
                         resolve()
                     })
                 } else {

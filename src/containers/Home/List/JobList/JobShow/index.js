@@ -14,7 +14,7 @@ class JobShow extends Component {
             opacity: 0
         }
     }
-    componentWillMount(){
+    componentWillMount() {
         this.getJobDetail()
     }
     componentDidMount() {
@@ -40,7 +40,7 @@ class JobShow extends Component {
                 this.setState({
                     job: res.data.doc,
                     axiosOk: true
-                },()=>{
+                }, () => {
                     Toast.hide()
                 })
             }
@@ -134,7 +134,10 @@ class JobShow extends Component {
                                         {this.state.job.detail}
                                     </pre>
                                 </div>
-                                <div style={style.company}>
+                                <div style={style.company}
+                                    onClick={() => {
+                                        this.props.history.push('/company_detail/' + this.state.job.user._id)
+                                    }}>
                                     <div>
                                         <span
                                             style={{
@@ -159,7 +162,7 @@ class JobShow extends Component {
                                 <Button type="primary" style={style.button} onClick={() => { this.goChat() }}>立即沟通</Button>
                             </div>
                         </div>
-                    ):''
+                    ) : ''
                 }
             </div>
         );
