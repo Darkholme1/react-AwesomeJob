@@ -98,7 +98,7 @@ class Myinfo extends Component {
                         arrow="horizontal"
                         thumb={require('../../../../resource/image/icon/private.png')}
                         multipleLine
-                        onClick={() => { }}>
+                        onClick={() => { this.props.history.push('/private_setting') }}>
                         隐私设置
                     </Item>
                     <Item

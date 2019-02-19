@@ -11,11 +11,11 @@ Router.get('/query', function (req, res) {
     })
 })
 //根据用户id查询简历id
-Router.get('/resume_id',function(req,res){
+Router.get('/resume_id', function (req, res) {
     Resume.findOne(
-        {user:req.query.user_id},
+        { user: req.query.user_id },
         '_id',
-        function(err,doc){
+        function (err, doc) {
             res.send(doc)
         }
     )
@@ -295,7 +295,8 @@ Router.get('/list', function (req, res) {
     Resume.find(
         {
             basic_info: { $ne: null },
-            job_want: { $ne: [] } //条件：有基本信息并且有求职期望
+            job_want: { $ne: [] }, //条件：有基本信息并且有求职期望
+            show: true
         },
         'job_want basic_info edu_exp').
         populate({
@@ -337,6 +338,24 @@ Router.get('/query_id', function (req, res) {
             }
         })
 
+})
+//简历隐私设置
+Router.post('/private', function (req, res) {
+    Resume.updateOne(
+        { user: req.cookies.user_id },
+        {
+            $set: {
+                show: JSON.parse(req.body.show)
+            }
+        },
+        function (err) {
+            if (!err) {
+                res.send({ error: 0 })
+            } else {
+                res.send({ error: 1 })
+            }
+        }
+    )
 })
 
 module.exports = Router
