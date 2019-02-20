@@ -173,18 +173,13 @@ class AddJob extends Component {
     render() {
         const Item = List.Item
         const rightContent = this.state.isEdit ?
-            [
-                <span
-                    onClick={() => {
-                        console.log('预览')
-                    }}>预览</span>,
-                <span
-                    style={{ marginLeft: '5px' }}
-                    onClick={() => {
-                        this.submit()
-                    }}>保存</span>
-            ] :
-            <span>预览</span>
+            <span
+                style={{ marginLeft: '5px' }}
+                onClick={() => {
+                    this.submit()
+                }}>保存</span>
+            :
+            ''
         return (
             <div>
                 <NavBar icon={<Icon type="left" />}

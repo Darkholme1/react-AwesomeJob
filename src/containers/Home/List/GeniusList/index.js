@@ -3,7 +3,6 @@ import { NavBar, PullToRefresh, Toast } from 'antd-mobile'
 import { withRouter } from 'react-router-dom'
 
 import ReactDOM from 'react-dom'
-
 import style from './style'
 
 import axios from '@/api/axios'
@@ -24,12 +23,12 @@ class GeniusList extends Component {
         this.getGeniusList()
         sessionStorage.removeItem('geniusId')
     }
-    componentDidMount(){
+    componentDidMount() {
         Toast.loading('Loading...', 10, () => {
             console.log('Load complete !!!');
         });
     }
-    componentDidUpdate(){
+    componentDidUpdate() {
         if (this.state.axiosOk) {
             Toast.hide()
         }
@@ -99,7 +98,7 @@ class GeniusList extends Component {
                         }
                         onClick={() => {
                             // sessionStorage.geniusId = obj._id
-                            this.props.history.push('/genius_detail/'+obj._id)
+                            this.props.history.push('/genius_detail/' + obj._id)
                         }}
                     >
                         <div style={{ height: '50px', lineHeight: '50px', color: '#888', fontSize: '18px', borderBottom: '1px solid rgba(136,136,136,0.2)' }}>
@@ -139,11 +138,11 @@ class GeniusList extends Component {
             <div>
                 <NavBar
                     style={{ position: 'fixed', top: '0', width: '100%', zIndex: '1' }}>
-                    Here is title
+                    AwesomeJob
                 </NavBar>
                 <PullToRefresh
                     damping={60}
-                    ref={el=>this.ptr=el}
+                    ref={el => this.ptr = el}
                     style={{
                         height: this.state.height,
                         width: this.state.width,
@@ -153,7 +152,7 @@ class GeniusList extends Component {
                     }}
                     indicator={{ deactivate: '下拉可以刷新' }}
                     direction='down'
-                    onScroll={()=>{
+                    onScroll={() => {
                         /* const ptr = ReactDOM.findDOMNode(this.ptr)
                         console.log(ptr.scrollTop) */
                     }}

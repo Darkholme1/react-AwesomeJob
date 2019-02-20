@@ -126,7 +126,7 @@ class BossDetail extends Component {
                         </span>
                     </div>
                     <div style={style.tagContainer}>
-                        <span style={{ ...style.jobTags, ...style.address }}>{item.user.city}</span>
+                        <span style={{ ...style.jobTags, ...style.address }}>{item.city[0]}</span>
                         <span style={style.jobTags}>{item.work_exp}</span>
                         <span style={style.jobTags}>{item.education}</span>
                     </div>

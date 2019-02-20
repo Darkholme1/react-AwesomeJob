@@ -56,7 +56,6 @@ class CompanyInfo extends Component {
                 <NavBar icon={<Icon type="left" />}
                     onLeftClick={() => { this.props.history.goBack() }}
                     style={{ position: 'fixed', width: '100%', top: '0', zIndex: '2' }}
-                    rightContent={<span onClick={() => { }}>预览</span>}
                 >
                     公司详情
                 </NavBar>
