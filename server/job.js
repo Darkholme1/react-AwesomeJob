@@ -67,16 +67,47 @@ Router.get('/list_mine', function (req, res) {
 })
 //职位列表
 Router.get('/list', function (req, res) {
-    let filterFind
-    let objPopulate
-    if(req.query.city!=='全部'){
+    let filterFind = {}
+    let filterPopulate
+    if (req.query.city !== '全部' && req.query.search !== '') {
         filterFind = {
             $and: [
-                {}
+                { city: [req.query.city] },
+                {
+                    job_name: {
+                        $regex: req.query.search
+                    }
+                }
             ]
         }
+    } else if (req.query.city !== '全部' && req.query.search === '') {
+        filterFind = {
+            city: [req.query.city]
+        }
+    } else if (req.query.city === '全部' && req.query.search !== '') {
+        filterFind = {
+            job_name: {
+                $regex: req.query.search
+            }
+        }
     }
-    if (req.query.city === '全部') {
+    Job.find(filterFind)
+        .populate({
+            path: 'user',
+            select: 'company city nickname position avatar company_info',
+        }).exec(function (err, doc) {
+            if (!err) {
+                res.send({
+                    error: 0,
+                    doc: doc
+                })
+            } else {
+                res.send({
+                    error: 1
+                })
+            }
+        })
+    /* if (req.query.city === '全部') {
         Job.find({
 
         })
@@ -112,7 +143,7 @@ Router.get('/list', function (req, res) {
                     })
                 }
             })
-    }
+    } */
 
 })
 //根据boss查询其发布的职位

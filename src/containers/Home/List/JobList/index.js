@@ -177,8 +177,13 @@ class JobList extends Component {
                 style={{ position: 'absolute', width: this.state.width, top: 45, zIndex: 0 }} 
                 placeholder="搜索" 
                 maxLength={8}
+                onChange={v=>{
+                    this.setState({
+                        search: v
+                    })
+                }}
                 onSubmit={()=>{
-                    console.log('ser')
+                    this.getJobList()
                 }} />
                 <PullToRefresh
                     damping={60}

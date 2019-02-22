@@ -147,7 +147,7 @@ class BossInfo extends Component {
                             <div style={style.avatarBox}>
                                 <img src={dataItem.icon} style={style.avatar} alt="" />
                                 {
-                                    (index => index == this.state.avatarChecked ? <Icon type={'check-circle'} style={style.checkCircle} /> : '')(index)
+                                    index == this.state.avatarChecked ? <Icon type={'check-circle'} style={style.checkCircle} /> : ''
                                 }
                             </div>
                         )} />

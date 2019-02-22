@@ -46,6 +46,7 @@ class GeniusInfo extends Component {
         }
     }
     onChangeAvatar(el) {
+        console.log(el)
         this.setState({
             avatarChecked: el.index
         })
@@ -148,7 +149,7 @@ class GeniusInfo extends Component {
                             <div style={style.avatarBox}>
                                 <img src={dataItem.icon} style={style.avatar} alt="" />
                                 {
-                                    (index => index == this.state.avatarChecked ? <Icon type={'check-circle'} style={style.checkCircle} /> : '')(index)
+                                    index == this.state.avatarChecked ? <Icon type={'check-circle'} style={style.checkCircle} /> : ''
                                 }
                             </div>
                         )} />
