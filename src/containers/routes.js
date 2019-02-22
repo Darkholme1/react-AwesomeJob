@@ -12,6 +12,7 @@ import BossDetail from './Home/List/JobList/JobShow/BossDetail'
 import CompanyDetail from './Home/List/JobList/JobShow/CompanyDetail'
 import BossInfo from './Userinfo/Boss'
 import GeniusInfo from './Userinfo/Genius'
+import Chatted from './Home/Mine/Myinfo/Chatted'
 import MyResume from './Home/Mine/Myinfo/MyResume'
 import PrivateSetting from './Home/Mine/Myinfo/PrivateSetting'
 import BasicInfo from './Home/Mine/Myinfo/MyResume/BasicInfo'
@@ -67,5 +68,6 @@ export {
     Chat,
     BossDetail,
     CompanyDetail,
-    PrivateSetting
+    PrivateSetting,
+    Chatted
 }

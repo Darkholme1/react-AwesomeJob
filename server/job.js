@@ -68,7 +68,6 @@ Router.get('/list_mine', function (req, res) {
 //职位列表
 Router.get('/list', function (req, res) {
     let filterFind = {}
-    let filterPopulate
     if (req.query.city !== '全部' && req.query.search !== '') {
         filterFind = {
             $and: [

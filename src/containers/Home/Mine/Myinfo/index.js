@@ -79,7 +79,11 @@ class Myinfo extends Component {
                     columnNum={3}
                     itemStyle={{ height: '60px' }}
                     renderItem={dataItem => (
-                        <div style={{ marginTop: '-5px' }}>
+                        <div
+                            style={{ marginTop: '-5px' }}
+                            onClick={() => {
+                                this.props.history.push('/chatted')
+                            }}>
                             <div style={{ fontSize: '18px', marginBottom: '5px' }}>{dataItem.num}</div>
                             <div style={{ fontSize: '10px', color: '#888' }}>{dataItem.text}</div>
                         </div>

@@ -4,7 +4,7 @@ class Chatted extends Component {
     render() {
         return (
             <div>
-                
+                Chatted
             </div>
         );
     }

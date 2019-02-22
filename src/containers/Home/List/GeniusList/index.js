@@ -1,11 +1,17 @@
 import React, { Component } from 'react';
-import { NavBar, PullToRefresh, Toast } from 'antd-mobile'
+import { NavBar, PullToRefresh, Toast, SearchBar } from 'antd-mobile'
 import { withRouter } from 'react-router-dom'
 
 import ReactDOM from 'react-dom'
 import style from './style'
 
 import axios from '@/api/axios'
+import { pickerCity } from '@/common/picker'
+
+const city = ['全部']
+pickerCity.forEach(item => {
+    city.push(item.label)
+});
 
 class GeniusList extends Component {
     constructor(props) {
@@ -16,12 +22,29 @@ class GeniusList extends Component {
             height: document.documentElement.clientHeight - 90,
             width: document.documentElement.clientWidth,
             resumes: [],
-            resumeList: []
+            resumeList: [],
+            city: '全部',
+            search: '',
+            areaShowStyle: {
+                position: 'absolute',
+                color: 'black',
+                background: 'white',
+                padding: '7px 20px',
+                borderRadius: 5,
+                boxShadow: '0 0 10px rgba(136,136,136,0.5)',
+                zIndex: 1,
+                visibility: 'hidden',
+                opacity: 0,
+                transition: '0.3s',
+                marginTop: 5
+            },
         };
     }
     componentWillMount() {
         this.getGeniusList()
         sessionStorage.removeItem('geniusId')
+        var city = /杭州/
+        console.log(city.test('杭州'))
     }
     componentDidMount() {
         Toast.loading('Loading...', 10, () => {
@@ -68,6 +91,22 @@ class GeniusList extends Component {
                     })
                     this.setState({
                         resumeList: resumeList
+                    }, () => {
+                        console.log(this.state.resumeList)
+                        let filterList = this.state.resumeList
+                        //条件筛选
+                        if (this.state.city !== '全部') {
+                            var regCity = new RegExp(this.state.city)
+                            filterList = filterList.filter(item => regCity.test(item.city) === true)
+                            
+                        }
+                        if (this.state.search !== '') {
+                            var regSearch = new RegExp(this.state.search,'i')
+                            filterList = filterList.filter(item => regSearch.test(item.jobWant) === true)
+                        }
+                        this.setState({
+                            resumeList: filterList
+                        })
                     })
                 })
                 /* console.log(this.state.resumes)
@@ -75,6 +114,29 @@ class GeniusList extends Component {
             }
         }).catch(err => {
             Toast.info('未知错误', 1.5)
+        })
+    }
+    areaShow() {
+        this.setState({
+            areaShowStyle: this.state.areaShowStyle.opacity == 0 ?
+                {
+                    ...this.state.areaShowStyle,
+                    opacity: 1,
+                    visibility: 'visible'
+                } : {
+                    ...this.state.areaShowStyle,
+                    opacity: 0,
+                    visibility: 'hidden'
+                }
+        })
+    }
+    areaHide() {
+        this.setState({
+            areaShowStyle: {
+                ...this.state.areaShowStyle,
+                opacity: 0,
+                visibility: 'hidden'
+            }
         })
     }
 
@@ -133,13 +195,57 @@ class GeniusList extends Component {
                 </div>
             )
         }
-
-        return (
+        const leftContent = (
             <div>
+                <span
+                    onClick={() => { this.areaShow() }}>{this.state.city}</span>
+                <div style={this.state.areaShowStyle}>
+                    {
+                        city.map(item => {
+                            return (
+                                <div
+                                    style={{
+                                        textAlign: 'center',
+                                        padding: '5px 0'
+                                    }}
+                                    onClick={() => {
+                                        this.setState({
+                                            city: item
+                                        }, () => {
+                                            this.getGeniusList()
+                                        })
+                                    }}>
+                                    {item}
+                                </div>
+                            )
+                        })
+                    }
+                </div>
+            </div>
+        )
+        return (
+            <div onClick={() => { this.areaHide() }}>
                 <NavBar
-                    style={{ position: 'fixed', top: '0', width: '100%', zIndex: '1' }}>
+                    style={{ position: 'fixed', top: '0', width: '100%', zIndex: '1' }}
+                    leftContent={leftContent}
+                    onLeftClick={(event) => {
+                        event.stopPropagation()
+                        this.areaShow()
+                    }}>
                     AwesomeJob
                 </NavBar>
+                <SearchBar
+                    style={{ position: 'absolute', width: this.state.width, top: 45, zIndex: 0 }}
+                    placeholder="搜索"
+                    maxLength={8}
+                    onChange={v => {
+                        this.setState({
+                            search: v
+                        })
+                    }}
+                    onSubmit={() => {
+                        this.getGeniusList()
+                    }} />
                 <PullToRefresh
                     damping={60}
                     ref={el => this.ptr = el}
@@ -148,7 +254,7 @@ class GeniusList extends Component {
                         width: this.state.width,
                         overflow: 'auto',
                         position: 'absolute',
-                        top: '45px',
+                        top: '89px',
                     }}
                     indicator={{ deactivate: '下拉可以刷新' }}
                     direction='down'

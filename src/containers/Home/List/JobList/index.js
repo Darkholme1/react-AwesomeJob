@@ -46,19 +46,19 @@ class JobList extends Component {
     }
     getJobList() {
         axios.get('/job/list',
-        {
-            params: {
-                city: this.state.city,
-                search: this.state.search
-            }
-        }).then(res => {
-            this.setState({
-                jobList: res.data.doc
+            {
+                params: {
+                    city: this.state.city,
+                    search: this.state.search
+                }
+            }).then(res => {
+                this.setState({
+                    jobList: res.data.doc
+                })
+                Toast.hide()
+            }).catch(err => {
+                Toast.info('未知错误', 1.5)
             })
-            Toast.hide()
-        }).catch(err => {
-            Toast.info('未知错误', 1.5)
-        })
     }
     areaShow() {
         this.setState({
@@ -150,7 +150,7 @@ class JobList extends Component {
                                     onClick={() => {
                                         this.setState({
                                             city: item
-                                        },()=>{
+                                        }, () => {
                                             this.getJobList()
                                         })
                                     }}>
@@ -173,18 +173,18 @@ class JobList extends Component {
                     }}>
                     AwesomeJob
                 </NavBar>
-                <SearchBar 
-                style={{ position: 'absolute', width: this.state.width, top: 45, zIndex: 0 }} 
-                placeholder="搜索" 
-                maxLength={8}
-                onChange={v=>{
-                    this.setState({
-                        search: v
-                    })
-                }}
-                onSubmit={()=>{
-                    this.getJobList()
-                }} />
+                <SearchBar
+                    style={{ position: 'absolute', width: this.state.width, top: 45, zIndex: 0 }}
+                    placeholder="搜索"
+                    maxLength={8}
+                    onChange={v => {
+                        this.setState({
+                            search: v
+                        })
+                    }}
+                    onSubmit={() => {
+                        this.getJobList()
+                    }} />
                 <PullToRefresh
                     damping={60}
                     ref={el => this.ptr = el}
