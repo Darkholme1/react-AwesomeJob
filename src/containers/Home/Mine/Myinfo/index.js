@@ -67,10 +67,9 @@ class Myinfo extends Component {
                 <header style={style.header}>
                     <h2 style={style.nickname}>{this.props.state.user.nickname}</h2>
                     {
-                        (() => {
-                            return this.props.state.user.avatar !== undefined ?
-                                <img alt="头像" style={style.avatar} src={require(`../../../../resource/image/avatar/av${this.props.state.user.avatar}.jpg`)} /> : ''
-                        })()
+                        this.props.state.user.avatar !== undefined ?
+                            <img alt="头像" style={style.avatar} src={require(`../../../../resource/image/avatar/av${this.props.state.user.avatar}.jpg`)} /> : ''
+
                     }
                 </header>
                 <Grid
@@ -78,11 +77,13 @@ class Myinfo extends Component {
                     hasLine={false}
                     columnNum={3}
                     itemStyle={{ height: '60px' }}
-                    renderItem={dataItem => (
+                    renderItem={(dataItem, index) => (
                         <div
                             style={{ marginTop: '-5px' }}
                             onClick={() => {
-                                this.props.history.push('/chatted')
+                                if (index === 0) {
+                                    this.props.history.push('/chatted')
+                                }
                             }}>
                             <div style={{ fontSize: '18px', marginBottom: '5px' }}>{dataItem.num}</div>
                             <div style={{ fontSize: '10px', color: '#888' }}>{dataItem.text}</div>

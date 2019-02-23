@@ -146,6 +146,7 @@ class Message extends Component {
                                         }
                                         item.time = time
                                     })
+                                    sessionStorage.msgList = JSON.stringify(this.state.msg)
                                     this.setState({
                                         axiosOk: true
                                     })
